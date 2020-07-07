@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/view/screens/home_screen.dart';
+import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
+import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/test_word_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 //step8
 //コード生成後のDBインスタンス取得
@@ -9,7 +13,19 @@ MyDatabase database;
 void main() {
   //runAppする前のところでインスタンス化
   database =MyDatabase();
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context)=>ListWordViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context)=>TestWordViewModel(),
+        ),
+      ],
+      child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
