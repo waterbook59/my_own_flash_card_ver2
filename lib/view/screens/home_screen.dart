@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:moor/moor.dart';
-import 'package:myownflashcardver2/parts/button_with_icon.dart';
+import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 
 import 'test_screen.dart';
 import 'word_list_screen.dart';

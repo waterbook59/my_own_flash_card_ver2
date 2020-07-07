@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myownflashcardver2/db/database.dart';
+import 'package:myownflashcardver2/models/db/database.dart';
 //import 'package:path/path.dart'; //これをimportしてたらcontext変になった
 import 'package:toast/toast.dart';
-import '../main.dart';
+import '../../main.dart';
 import 'edit_screen.dart';
 
 class WordListScreen extends StatefulWidget {

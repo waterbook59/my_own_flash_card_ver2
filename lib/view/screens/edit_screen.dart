@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:moor_ffi/database.dart';
-import 'package:myownflashcardver2/db/database.dart';
+import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/main.dart';
-import 'package:myownflashcardver2/parts/words_textfield.dart';
+import 'package:myownflashcardver2/view/components/words_textfield.dart';
 //import 'package:myownflashcardver2/parts/words_textfield.dart';
-import 'package:myownflashcardver2/screens/word_list_screen.dart';
+import 'package:myownflashcardver2/view/screens/word_list_screen.dart';
 import 'package:toast/toast.dart';
 
 //enumは分岐される側で設定がわかりやすいかも
