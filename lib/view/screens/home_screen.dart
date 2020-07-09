@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:moor/moor.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
+import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 
 import 'test_screen.dart';
 import 'word_list_screen.dart';
@@ -83,6 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 50.0,
             ),
+            ButtonWithIcon(
+              // 一覧画面ボタン onPressed
+              onPressed: () => _lookListTest(context),
+              label: "リファクタリングボタン",
+              icon: Icon(Icons.list),
+              color: Colors.amber,
+            ),
             Text("powered by Ikuto/Tatsuki 2020"),
             SizedBox(
               height: 20.0,
@@ -106,6 +114,15 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (context) => WordListScreen()),
     );
   }
+
+  //テスト用
+  _lookListTest(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ListWordScreen()),
+    );
+  }
+
 
   Widget _radioButtons() {
     return Padding(
@@ -141,6 +158,8 @@ class _HomeScreenState extends State<HomeScreen> {
       print("testTypeは$value");
     });
   }
+
+
 
 
 //  Widget _switch() {

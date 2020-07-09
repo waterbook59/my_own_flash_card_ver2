@@ -4,6 +4,7 @@ import 'package:moor_ffi/database.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/main.dart';
 import 'package:myownflashcardver2/view/components/words_textfield.dart';
+import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 //import 'package:myownflashcardver2/parts/words_textfield.dart';
 import 'package:myownflashcardver2/view/screens/word_list_screen.dart';
 import 'package:toast/toast.dart';
@@ -104,7 +105,7 @@ class _EditScreenState extends State<EditScreen> {
   Future<bool> _backToListScreen() {
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context)=>WordListScreen())
+        MaterialPageRoute(builder: (context)=>ListWordScreen())
         );
         //trueにすると、デフォルトの戻るやり方、つまりEditScreenをNavigator.pop(削除)する
         //Navigator.pushReplacementなし＆ return Future.value(true)だとHomeScreenへ戻る
