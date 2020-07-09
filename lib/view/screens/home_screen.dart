@@ -26,14 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             Expanded(child: Image.asset("assets/images/image_title.png")),
-            const Text("私だけの単語帳",
-                style: TextStyle(
-                  fontSize: 40.0,
-                )),
-            const Text(
-              "My Own Flashcard",
-              style: TextStyle(fontSize: 15.0, fontFamily: "Regular"),
-            ),
+            const Text("私だけの単語帳", style: TextStyle(fontSize: 40.0,)),
+            const Text("My Own Flashcard", style: TextStyle(fontSize: 15.0, fontFamily: "Regular"),),
             Divider(
               color: Colors.white,
               height: 30.0,
@@ -66,14 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.accessibility),
               color: Colors.purpleAccent,
             ),
-            SizedBox(
-              height: 10.0,
-            ),
+            SizedBox(height: 10.0,),
              _radioButtons(),
             //_switch(),
-            SizedBox(
-              height: 25.0,
-            ),
+            SizedBox(height: 25.0,),
             ButtonWithIcon(
               // 一覧画面ボタン onPressed
               onPressed: () => _confirmWordList(context),
@@ -81,20 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.list),
               color: Colors.indigo,
             ),
-            SizedBox(
-              height: 50.0,
-            ),
+            SizedBox(height: 15.0,),
             ButtonWithIcon(
-              // 一覧画面ボタン onPressed
               onPressed: () => _lookListTest(context),
               label: "リファクタリングボタン",
-              icon: Icon(Icons.list),
+              icon: Icon(Icons.account_balance_wallet),
               color: Colors.amber,
             ),
+            SizedBox(height: 20.0,),
             Text("powered by Ikuto/Tatsuki 2020"),
-            SizedBox(
-              height: 20.0,
-            ),
+            SizedBox(height: 20.0,),
           ],
         ),
       ),
