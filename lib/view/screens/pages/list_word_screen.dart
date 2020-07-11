@@ -1,6 +1,7 @@
 //word_list_screenをMVVMへリファクタリング
 
 import 'package:flutter/material.dart';
+import 'package:myownflashcardver2/view/components/memorized_checked_icon.dart';
 import 'package:myownflashcardver2/view/components/word_item.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,9 @@ class ListWordScreen extends StatelessWidget {
                      itemBuilder: (context, int position) =>
                        WordItem(
                          word:model.words[position],
-                         onWordTaped: (word)=>_upDateWord(word,context),)
+                         onWordTaped: (word)=>_upDateWord(word,context),
+//                         memorizedCheckedIcon:MemorizedCheckedIcon(isCheckedIcon: model.words[position].isMemorized),
+                       )
                    );
                 }
           ),
