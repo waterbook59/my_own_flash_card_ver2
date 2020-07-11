@@ -1,3 +1,5 @@
+//daoへクエリ外注予定
+
 //step1でpubspec.yamlのdependencies,dev.dependenciesに各項目入れてpub.get
 //libフォルダ内にデータベースの記載を格納するdartファイルを準備(今回はdatabase.dart)
 

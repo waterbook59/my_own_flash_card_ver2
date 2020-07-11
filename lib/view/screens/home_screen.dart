@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 //import 'package:moor/moor.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
+import 'package:myownflashcardver2/view/components/radio_buttons.dart';
+import 'package:myownflashcardver2/view/components/radio_selected_type.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 
 import 'test_screen.dart';
@@ -14,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Memorized _testType = Memorized.includedWords;
+  Memorized testType = Memorized.includedWords;
   // Memorized.includedWordsをtrue,Memorized.excludedWordsをfalseに変換するには？？？
 //  bool isIncludedMemorizedWords= boolean(Memorized.includedWords.index);
 
@@ -61,7 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.purpleAccent,
             ),
             SizedBox(height: 10.0,),
-             _radioButtons(),
+            //ここだけConsumerでRadioButtons変更もあるが、homeScreenをstatefulウィジェットにしているのでこのままでも
+           RadioSelectedType(testType: testType,
+              onRadioSelected:(value)=>//ここのvalueにはradio_selected_typeからきたtestTypeValueが入る
+                  _selected(value),),
+//            _radioButtons(),
             //_switch(),
             SizedBox(height: 25.0,),
             ButtonWithIcon(
@@ -90,8 +96,15 @@ class _HomeScreenState extends State<HomeScreen> {
   _testStart() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TestScreen(testType: _testType,)),
+      MaterialPageRoute(builder: (context) => TestScreen(testType: testType,)),
     );
+  }
+
+  _selected(value) {
+    testType = value;
+    print("ここで取れた$valueをdbへ流す");
+    setState(() {
+    });
   }
 
   _confirmWordList(BuildContext context) {//引数にcontextを入れずとも画面遷移できるが必要か
@@ -110,40 +123,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  Widget _radioButtons() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 50.0),
-      child: Column(children: <Widget>[
-          RadioListTile(
-            secondary: Icon(Icons.category),
-            controlAffinity: ListTileControlAffinity.trailing,
-            title: Text("全ての単語"),
-            value: Memorized.includedWords,
-            groupValue: _testType,
-            // ラジオボタン(暗記済除外)onChanged
-            onChanged: (value) => _onRadioSelected(value),
-          ),
-          RadioListTile(
-            secondary: Icon(Icons.thumb_up),
-            controlAffinity: ListTileControlAffinity.trailing,
-            title: Text("暗記済単語を除外"),
-            value: Memorized.excludedWords,
-            groupValue: _testType,
-            // ラジオボタン(暗記済含む)onChanged
-            onChanged: (value) => _onRadioSelected(value),
-          ),
-        ],
-      ),
-    );
-  }
+//  Widget _radioButtons() {
+//    return Padding(
+//      padding: const EdgeInsets.only(left: 50.0),
+//      child: Column(children: <Widget>[
+//          RadioListTile(
+//            secondary: Icon(Icons.category),
+//            controlAffinity: ListTileControlAffinity.trailing,
+//            title: Text("全ての単語"),
+//            value: Memorized.includedWords,
+//            groupValue: testType,
+//            // ラジオボタン(暗記済除外)onChanged
+//            onChanged: (value) => _selectedButton(value),
+//          ),
+//          RadioListTile(
+//            secondary: Icon(Icons.thumb_up),
+//            controlAffinity: ListTileControlAffinity.trailing,
+//            title: Text("暗記済単語を除外"),
+//            value: Memorized.excludedWords,
+//            groupValue: testType,
+//            // ラジオボタン(暗記済含む)onChanged
+//            onChanged: (value) => _selectedButton(value),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
 
-  _onRadioSelected(value) {
-    //onChangedの引数にRadioListTile(value:xx)の値が入ってくる
-    setState(() {
-      _testType = value;
-      print("testTypeは$value");
-    });
-  }
+//  _selectedButton(value) {
+//    //onChangedの引数にRadioListTile(value:xx)の値が入ってくる
+//    setState(() {
+//      testType = value;
+//      print("testTypeは$value");
+//    });
+//  }
+
+
 
 
 
