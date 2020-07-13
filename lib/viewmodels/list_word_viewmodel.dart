@@ -33,6 +33,11 @@ class ListWordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+//  Future<void> wordDeleted() async{
+//    _words =await _repository.wordDeleted();
+//    notifyListeners();
+//  }
+
 
 }
 

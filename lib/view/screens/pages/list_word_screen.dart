@@ -7,12 +7,14 @@ import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../edit_screen.dart';
+import 'add_edit_screen.dart';
 
 class ListWordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
 
+    //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
       Future(()=>viewModel.getWordList());
 
@@ -46,7 +48,8 @@ class ListWordScreen extends StatelessWidget {
                      itemBuilder: (context, int position) =>
                        WordItem(
                          word:model.words[position],
-                         onWordTaped: (word)=>_upDateWord(word,context),
+//                         onLongTapped: (word)=>_deleteWord(word,context),,
+                         onWordTapped: (word)=>_upDateWord(word,context),
 //                         memorizedCheckedIcon:MemorizedCheckedIcon(isCheckedIcon: model.words[position].isMemorized),
                        )
                    );
@@ -92,10 +95,44 @@ class ListWordScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => EditScreen(
+          builder: (context) => AddEditScreen(
             status: EditStatus.add,
           )
       ),
     );
   }
+
+//  Future<void> _deleteWord(word, BuildContext context) async {
+//    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+//    await viewModel.timeSorted();
+//  }
+
+
+//  _deleteWord( Word selectedWord) async {
+//    showDialog(
+//        context: context,
+//        barrierDismissible: false,
+//        builder: (_) => AlertDialog(
+//          title: Text("${selectedWord.strQuestion}の削除"),
+//          content: Text("削除してもいいですか？"),
+//          actions: <Widget>[
+//            FlatButton(
+//              onPressed: () async {
+//                await database.deleteWord(selectedWord);
+//                Toast.show("削除完了しました", context);
+//                _getAllWords();
+//                Navigator.pop(context);
+//              },
+//              child: Text("はい"),
+//            ),
+//            FlatButton(
+//              onPressed: () {
+//                Navigator.pop(context);
+//              },
+//              child: Text("いいえ"),
+//            ),
+//          ],
+//        ));
+//  }
+
 }

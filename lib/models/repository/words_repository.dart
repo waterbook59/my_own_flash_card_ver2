@@ -24,4 +24,12 @@ class WordsRepository  {
     return result;
   }
 
+  //addWord,update,delete戻り値はvoidで良い？？
+  Future addWord(word) async{
+    await database.addWord(word);
+//    return result;
+  }
+
+//  wordDeleted() {}
+
 }
