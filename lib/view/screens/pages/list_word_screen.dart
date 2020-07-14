@@ -82,7 +82,7 @@ class ListWordScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => EditScreen(
+          builder: (context) => AddEditScreen(
             status: EditStatus.edit,
             word: updateWord,
           )
