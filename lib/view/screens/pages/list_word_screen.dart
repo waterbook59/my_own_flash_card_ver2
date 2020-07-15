@@ -1,12 +1,12 @@
 //word_list_screenをMVVMへリファクタリング
 
 import 'package:flutter/material.dart';
+import 'package:myownflashcardver2/data/edit_status.dart';
 import 'package:myownflashcardver2/view/components/memorized_checked_icon.dart';
 import 'package:myownflashcardver2/view/components/word_item.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import '../edit_screen.dart';
 import 'add_edit_screen.dart';
 
 class ListWordScreen extends StatelessWidget {
@@ -68,7 +68,6 @@ class ListWordScreen extends StatelessWidget {
   }
 
   Future<void> checkSort(BuildContext context) async{
-    print("ヘルプミー");
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
     await viewModel.allWordsSorted();
   }

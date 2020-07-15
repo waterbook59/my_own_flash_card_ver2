@@ -6,7 +6,7 @@ import 'package:myownflashcardver2/main.dart';
 import 'package:myownflashcardver2/view/components/words_textfield.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 //import 'package:myownflashcardver2/parts/words_textfield.dart';
-import 'package:myownflashcardver2/view/screens/word_list_screen.dart';
+import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
 import 'package:toast/toast.dart';
 
 //enumは分岐される側で設定がわかりやすいかも

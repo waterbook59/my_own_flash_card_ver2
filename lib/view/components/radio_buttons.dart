@@ -24,7 +24,7 @@ class RadioButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Column(children: <Widget>[
         RadioListTile(
-          secondary: Icon(Icons.category),
+          secondary: Icon(Icons.account_balance),
           controlAffinity: ListTileControlAffinity.trailing,
           title: Text("全ての単語"),
           value: Memorized.includedWords,
@@ -34,7 +34,7 @@ class RadioButtons extends StatelessWidget {
           onChanged: (value)=>onRadioSelected(value),
     ),
         RadioListTile(
-         secondary: Icon(Icons.thumb_up),
+         secondary: Icon(Icons.assignment_turned_in),
           controlAffinity: ListTileControlAffinity.trailing,
           title: Text("暗記済単語を除外"),
           value: Memorized.excludedWords,

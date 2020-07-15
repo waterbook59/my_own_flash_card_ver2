@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
-import 'package:myownflashcardver2/view/screens/home_screen.dart';
+import 'package:myownflashcardver2/view/screens_before/home_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens/screen_home.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';

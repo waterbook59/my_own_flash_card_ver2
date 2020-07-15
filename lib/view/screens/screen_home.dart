@@ -5,8 +5,8 @@ import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
-import 'package:myownflashcardver2/view/screens/test_screen.dart';
-import 'package:myownflashcardver2/view/screens/word_list_screen.dart';
+import 'package:myownflashcardver2/view/screens_before/test_screen.dart';
+import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -87,9 +87,10 @@ class ScreenHome extends StatelessWidget {
 
 
   _testStart(BuildContext context) {
+    final viewModel= Provider.of<HomeScreenViewModel>(context,listen: false);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TestScreen(testType: testType,)),
+      MaterialPageRoute(builder: (context) => TestScreen(testType: viewModel.testRadioType,)),
     );
   }
 
