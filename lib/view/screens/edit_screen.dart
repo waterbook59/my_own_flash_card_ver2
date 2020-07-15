@@ -103,7 +103,7 @@ class _EditScreenState extends State<EditScreen> {
   Future<bool> _backToListScreen() {
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context)=>ListWordScreen())
+        MaterialPageRoute(builder: (context)=>WordListScreen())
         );
         //trueにすると、デフォルトの戻るやり方、つまりEditScreenをNavigator.pop(削除)する
         //Navigator.pushReplacementなし＆ return Future.value(true)だとHomeScreenへ戻る

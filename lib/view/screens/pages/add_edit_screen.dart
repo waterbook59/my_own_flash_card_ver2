@@ -68,6 +68,7 @@ class AddEditScreen extends StatelessWidget {
     );
   }
 
+//  todo 単語登録をレポジトリ経由で外注
   Future<void>  _onWordRegistered(BuildContext context) async{
     print(_questionController.text);
     print(_answerController.text);

@@ -13,6 +13,7 @@ class EditWordViewModel extends ChangeNotifier {
       notifyListeners();
     }
     if(status == EditStatus.edit){
+      print("editwordviewmodel:$status");
       _titleText= Text("登録した単語の修正");
       notifyListeners();
     }

@@ -1,0 +1,1 @@
+enum Memorized { includedWords, excludedWords }

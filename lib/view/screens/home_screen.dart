@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myownflashcardver2/data/memorized_status.dart';
 //import 'package:moor/moor.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
@@ -8,7 +9,7 @@ import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'test_screen.dart';
 import 'word_list_screen.dart';
 
-enum Memorized { includedWords, excludedWords }
+
 
 class HomeScreen extends StatefulWidget {
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
-import 'package:myownflashcardver2/view/screens/home_screen.dart';
+//import 'package:myownflashcardver2/view/screens/home_screen.dart';
 
 import '../../main.dart';
 

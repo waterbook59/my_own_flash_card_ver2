@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/view/screens/home_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
+import 'package:myownflashcardver2/view/screens/screen_home.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/test_word_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +28,9 @@ void main() {
         ChangeNotifierProvider(
           create: (context)=>EditWordViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context)=>HomeScreenViewModel(),
+        ),
       ],
       child: MyApp(),
     )
@@ -41,7 +46,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         fontFamily: "Corporate",
       ),
-      home: HomeScreen(),
+      //MVVMとしてHomeScreen()からScreenHome()へ変更
+      home: ScreenHome(),
     );
   }
 }

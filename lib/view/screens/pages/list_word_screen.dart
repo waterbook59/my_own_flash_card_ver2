@@ -68,6 +68,7 @@ class ListWordScreen extends StatelessWidget {
   }
 
   Future<void> checkSort(BuildContext context) async{
+    print("ヘルプミー");
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
     await viewModel.allWordsSorted();
   }
