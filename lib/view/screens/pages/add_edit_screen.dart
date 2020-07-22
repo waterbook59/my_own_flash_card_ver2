@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
+import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/view/components/word_text_input.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
@@ -32,23 +33,22 @@ class AddEditScreen extends StatelessWidget {
             final model = Provider.of<EditWordViewModel>(context,listen: false);
             Future(()=>model.getTitleText(status,word));
               return
-
-          WillPopScope(//戻るときに単にpopではなく、pushReplace
-             onWillPop: ()=> _backToListScreen(context),
-             child: Scaffold(
-               appBar: AppBar(
-                 title:
-                 Consumer<EditWordViewModel>(builder: (context,model,child){
-                   return model.titleText;
-                 }),
-                 actions: <Widget>[
-                   IconButton(
-                     tooltip: "登録",
-                     icon: Icon(Icons.check),
-                     onPressed: ()=>_onWordRegistered(context,status),),
-                 ],
-               ),
-               body:AddEditBody(),
+                WillPopScope(//戻るときに単にpopではなく、pushReplace
+               onWillPop: ()=> _backToListScreen(context),
+               child: Scaffold(
+                 appBar: AppBar(
+                   title:
+                   Consumer<EditWordViewModel>(builder: (context,model,child){
+                     return model.titleText;
+                   }),
+                   actions: <Widget>[
+                     IconButton(
+                       tooltip: "登録",
+                       icon: Icon(Icons.check),
+                       onPressed: ()=>_onWordRegistered(context,status),),
+                   ],
+                 ),
+                 body:AddEditBody(),
       ),
     );
           },
@@ -59,13 +59,9 @@ class AddEditScreen extends StatelessWidget {
 //  todo 単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
   Future<void>  _onWordRegistered(BuildContext context, EditStatus status) async{
     final viewModel = Provider.of<EditWordViewModel>(context,listen: false);
-    print(viewModel.questionController.text);
-    print(viewModel.answerController.text);
+//    print(viewModel.questionController.text);
+//    print(viewModel.answerController.text);
     viewModel.onRegisteredWord(status);
-//    if(status == EditStatus.add){
-//      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
-//        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
-//        return;
       }
 
 //      viewModel.insertWord();
@@ -119,15 +115,27 @@ class _AddEditBodyState extends State<AddEditBody> {
   void initState() {
     super.initState();
     final viewModel = Provider.of<EditWordViewModel>(context, listen: false);
-    viewModel.loginSuccessAction.stream.listen((st) {
-      print(st);
-      Toast.show("$st登録完了！",context);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context)=>ListWordScreen())
-      );
-    });
-  }
+    viewModel.loginSuccessAction.stream.listen((event) {
+      print(event);
+      switch(event){
+        case Event.empty:
+          Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          break;
+        case Event.add:
+          Toast.show("${viewModel.questionController.text}登録完了",context);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context)=>ListWordScreen()));
+          break;
+        case Event.update:
+          Toast.show("更新しました", context);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context)=>ListWordScreen()));
+          break;
+        }
+      });
+    }
 
   @override
   Widget build(BuildContext context) {

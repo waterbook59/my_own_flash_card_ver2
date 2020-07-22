@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
+import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/data/uistate.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
@@ -17,7 +18,7 @@ class EditWordViewModel extends ChangeNotifier {
   TextEditingController _answerController = TextEditingController();
   List<Word> _words=List();
   //Stream関連
-  StreamController<String> _loginSuccessAction = StreamController<String>.broadcast();
+  StreamController<Event> _loginSuccessAction = StreamController<Event>.broadcast();
   UiState _uiState = UiState.Idle;
 
 
@@ -27,7 +28,7 @@ class EditWordViewModel extends ChangeNotifier {
   TextEditingController get answerController => _answerController;
   List<Word> get words =>_words;
   //Stream関連
-  StreamController<String> get loginSuccessAction => _loginSuccessAction;
+  StreamController<Event> get loginSuccessAction => _loginSuccessAction;
   UiState get uiState =>_uiState;
   bool get isLogging => uiState == UiState.Loading;
 
@@ -69,20 +70,20 @@ class EditWordViewModel extends ChangeNotifier {
 
 
 
-  void login() {
-    _uiState = UiState.Loading;
-    print(_uiState);
-    notifyListeners();
-
-    Future.delayed(Duration(milliseconds: 1500)).then((_) {
-      // Login Success!
-
-      _uiState = UiState.Loaded;
-      print(_uiState);
-      notifyListeners();
-      _loginSuccessAction.sink.add("ストリーム！！");
-    });
-  }
+//  void login() {
+//    _uiState = UiState.Loading;
+//    print(_uiState);
+//    notifyListeners();
+//
+//    Future.delayed(Duration(milliseconds: 1500)).then((_) {
+//      // Login Success!
+//
+//      _uiState = UiState.Loaded;
+//      print(_uiState);
+//      notifyListeners();
+//      _loginSuccessAction.sink.add("ストリーム！！");
+//    });
+//  }
 
   @override
   void dispose() {
@@ -91,15 +92,25 @@ class EditWordViewModel extends ChangeNotifier {
   }
 
   void onRegisteredWord(EditStatus status) {
-    //    if(status == EditStatus.add){
-//      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
-//        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
-//        return;
+    //ここでstatusによってaddとupdateの条件設定
+    if (status == EditStatus.add) {
+      if (_questionController.text == "" || _answerController.text == "") {
+//        Toast.show("問題または答えを入力してください。", context, duration: Toast.LENGTH_LONG);
+      //sink.addでStringじゃなくてイベントを渡して状態でNavigator.pushReplacementする・しないを分ける
+        _loginSuccessAction.sink.add(Event.empty);
+        return;
+      }
+      //ここをasync/awaitに書き換えてみる
+      Future.delayed(Duration(milliseconds: 1500)).then((_) {
+        _loginSuccessAction.sink.add(Event.add);
+        return;
+      });
+    }
+    if(status == EditStatus.edit){
+      _loginSuccessAction.sink.add(Event.update);
+      return;
+    }
 
-    Future.delayed(Duration(milliseconds: 1500)).then((_) {
-      // Login Success!
-      _loginSuccessAction.sink.add("${_questionController.text}");
-    });
 
   }
 

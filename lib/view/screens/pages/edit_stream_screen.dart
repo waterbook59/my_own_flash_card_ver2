@@ -83,8 +83,8 @@ class __LoginPageBodyState extends State<_LoginPageBody> {
       return null;
     }else{
       return(){
-        viewModel.login();
-
+//        viewModel.login();
+     print("viewModel.login()してた");
       };
     }
 

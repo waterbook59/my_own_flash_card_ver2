@@ -19,7 +19,7 @@ class ListWordViewModel extends ChangeNotifier {
 
   Future<void> getWordList() async{
     _words =await _repository.getWordList();
-    print("レポジトリから取れてくれ：$_words");
+    print("DB=>レポジトリ=>vieModelで取得したデータ：$_words");
     notifyListeners();
   }
 
