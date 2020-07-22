@@ -20,6 +20,7 @@ class EditWordViewModel extends ChangeNotifier {
   //Stream関連
   StreamController<Event> _loginSuccessAction = StreamController<Event>.broadcast();
   UiState _uiState = UiState.Idle;
+  Event _eventStatus;
 
 
   Text get titleText =>_titleText;
@@ -31,6 +32,8 @@ class EditWordViewModel extends ChangeNotifier {
   StreamController<Event> get loginSuccessAction => _loginSuccessAction;
   UiState get uiState =>_uiState;
   bool get isLogging => uiState == UiState.Loading;
+  Event get eventStatus => _eventStatus;
+
 
   //editScreenのinitStateに書いていた条件分岐による設定値をここで定義する
   Future<void> getTitleText(status,word) async{
@@ -91,20 +94,55 @@ class EditWordViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void onRegisteredWord(EditStatus status) {
+  Future<void> onRegisteredWord(EditStatus status) async{
     //ここでstatusによってaddとupdateの条件設定
     if (status == EditStatus.add) {
       if (_questionController.text == "" || _answerController.text == "") {
-//        Toast.show("問題または答えを入力してください。", context, duration: Toast.LENGTH_LONG);
       //sink.addでStringじゃなくてイベントを渡して状態でNavigator.pushReplacementする・しないを分ける
         _loginSuccessAction.sink.add(Event.empty);
         return;
       }
-      //ここをasync/awaitに書き換えてみる
-      Future.delayed(Duration(milliseconds: 1500)).then((_) {
+      //文字登録
+      var word = Word(
+        strQuestion: _questionController.text,
+        strAnswer: _answerController.text,
+        strTime: DateTime.now(),
+        isMemorized: false,
+      );
+
+      //repositoryから返ってきたイベントを格納する
+      _eventStatus =await _repository.addWord(word);
+
+      //エラー受け取ったらToastうまく登録できたらclear
+      if(_eventStatus==Event.add){
         _loginSuccessAction.sink.add(Event.add);
+        _questionController.clear();
+        _answerController.clear();
         return;
-      });
+      }
+      if(_eventStatus==Event.adderror){
+        _loginSuccessAction.sink.add(Event.adderror);
+        return;
+      }
+
+      // Toast.show("この問題はすでに登録されているので登録できません", context, duration: Toast.LENGTH_LONG);
+
+
+
+
+
+
+
+
+      //thenではなくasync/awaitに書き換え
+//      await Future.delayed(Duration(milliseconds: 750));
+//      _loginSuccessAction.sink.add(Event.add);
+//      return;
+
+//      Future.delayed(Duration(milliseconds: 1500)).then((_) {
+//        _loginSuccessAction.sink.add(Event.add);
+//        return;
+//      });
     }
     if(status == EditStatus.edit){
       _loginSuccessAction.sink.add(Event.update);

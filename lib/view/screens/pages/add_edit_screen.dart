@@ -12,15 +12,11 @@ class AddEditScreen extends StatelessWidget {
   final EditStatus status;
   final Word word;
 
-//  final String _appBarTitleText="パッパラー";
-//  final TextEditingController _questionController=TextEditingController();
-//  final TextEditingController _answerController=TextEditingController();
-
   AddEditScreen({@required this.status,this.word});
 
   @override
   Widget build(BuildContext context) {
-//    String _titleText="試しのタイトル(statusで分ける予定)";
+//    String _titleText="試しのタイトル(statusで分ける)";
     return
       MultiProvider(
           providers: [
@@ -34,21 +30,21 @@ class AddEditScreen extends StatelessWidget {
             Future(()=>model.getTitleText(status,word));
               return
                 WillPopScope(//戻るときに単にpopではなく、pushReplace
-               onWillPop: ()=> _backToListScreen(context),
-               child: Scaffold(
-                 appBar: AppBar(
-                   title:
-                   Consumer<EditWordViewModel>(builder: (context,model,child){
-                     return model.titleText;
-                   }),
-                   actions: <Widget>[
-                     IconButton(
-                       tooltip: "登録",
-                       icon: Icon(Icons.check),
-                       onPressed: ()=>_onWordRegistered(context,status),),
-                   ],
-                 ),
-                 body:AddEditBody(),
+                   onWillPop: ()=> _backToListScreen(context),
+                   child: Scaffold(
+                     appBar: AppBar(
+                       title:
+                       Consumer<EditWordViewModel>(builder: (context,model,child){
+                         return model.titleText;
+                       }),
+                       actions: <Widget>[
+                         IconButton(
+                           tooltip: "登録",
+                           icon: Icon(Icons.check),
+                           onPressed: ()=>_onWordRegistered(context,status),),
+                       ],
+                     ),
+                     body:AddEditBody(),
       ),
     );
           },
@@ -116,16 +112,19 @@ class _AddEditBodyState extends State<AddEditBody> {
     super.initState();
     final viewModel = Provider.of<EditWordViewModel>(context, listen: false);
     viewModel.loginSuccessAction.stream.listen((event) {
-      print(event);
+      print("view層で受けた$event");
       switch(event){
         case Event.empty:
-          Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
           break;
         case Event.add:
-          Toast.show("${viewModel.questionController.text}登録完了",context);
+          Toast.show("750ms待って「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context)=>ListWordScreen()));
+          break;
+        case Event.adderror:
+          Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
           break;
         case Event.update:
           Toast.show("更新しました", context);

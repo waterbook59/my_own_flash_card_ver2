@@ -1,6 +1,7 @@
 //いわゆるレポジトリ層
 import 'package:flutter/material.dart';
 import 'package:moor_ffi/database.dart';
+import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 
 import '../../main.dart';
@@ -9,6 +10,7 @@ import '../../main.dart';
 class WordsRepository  {
 
   List<Word> result=List();
+  Event dbEvent;
 
   Future<List<Word>> getWordList() async{
     result = await database.allWords;
@@ -26,11 +28,24 @@ class WordsRepository  {
   }
 
   //addWord,update,delete戻り値はvoidで良い？？
-  Future addWord(word) async{
-    await database.addWord(word);
+//  Future<void> addWord(word) async{
+//    await database.addWord(word);
+//    return;
+//  }
 
-//    return result;
+  Future<Event> addWord(word) async{
+    //returnするイベントを定義してイベントの状態をviewmodelに返す＆Future<void>からFuture<Event>変更
+  try{
+    await database.addWord(word);
+    dbEvent =Event.add;
+    return dbEvent;
+  }on SqliteException catch (e) {
+    //最終的にproxyproviderで自動通知できる？
+    print("repositoryでのエラー：${e.toString()}");
+    dbEvent =Event.adderror;
+    } return dbEvent;
   }
+
 
   Future<void> insertWord(Word word) async{
 

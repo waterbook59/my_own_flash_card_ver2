@@ -256,7 +256,7 @@ class _EditScreenState extends State<EditScreen> {
               Toast.show("この問題はすでに登録されているので登録できません", context,
                   duration: Toast.LENGTH_LONG);
               // return; //finallyの処理を実行させるためにfinallyをつける
-            }finally{//finallyはtryの場合でもcatchの場合でも実行する
+            }finally{//finallyはtryの場合でもcatchの場合でも実行する,ダイアログ閉じるために行う
               Navigator.pop(context);
             }
           },

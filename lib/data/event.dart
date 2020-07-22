@@ -1,1 +1,1 @@
-enum Event{empty,add,update }
+enum Event{empty,add,update,adderror }
