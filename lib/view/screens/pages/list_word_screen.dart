@@ -97,7 +97,7 @@ class ListWordScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => EditStreamScreen(
+          builder: (context) => AddEditScreen(
             status: EditStatus.add,
           )
       ),

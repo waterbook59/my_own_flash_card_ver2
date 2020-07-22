@@ -5,10 +5,7 @@ import 'package:myownflashcardver2/view/components/word_text_input.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-
-
 import 'list_word_screen.dart';
-
 
 class AddEditScreen extends StatelessWidget {
   final EditStatus status;
@@ -20,65 +17,43 @@ class AddEditScreen extends StatelessWidget {
 
   AddEditScreen({@required this.status,this.word});
 
-
   @override
   Widget build(BuildContext context) {
 //    String _titleText="試しのタイトル(statusで分ける予定)";
-
-    //画面遷移したときinitState的にstatusの違いでText(新しい単語の追加 or 登録した単語の修正)というインスタンスをモデルの方で作っておく
-    final model = Provider.of<EditWordViewModel>(context,listen: false);
-    Future(()=>model.getTitleText(status,word));
-
-
-
-    return WillPopScope(//戻るときに単にpopではなく、pushReplace
-      onWillPop: ()=> _backToListScreen(context),
-      child: Scaffold(
-        appBar: AppBar(
-          title:
-//          Text(_titleText),
-          Consumer<EditWordViewModel>(
-              builder: (context,model,child){
-            return model.titleText;
-          }),
-
-          actions: <Widget>[
-            IconButton(
-              tooltip: "登録",
-              icon: Icon(Icons.check),
-              onPressed: ()=>_onWordRegistered(context,status),
-            ),
+    return
+      MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context)=>EditWordViewModel(),),
           ],
-        ),
-        body:SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 20.0,),
-              const Text("問題と答えを入力して「登録」ボタンを押してください"),
-              const SizedBox(height: 40.0,),
-              Consumer<EditWordViewModel>(
-                  builder: (context,model,child){
-                    return WordTextInput(
-                      label: "問題",
-                      textEditingController: model.questionController,
-                      isQuestionEnabled: model.isQuestionEnabled,);
-                  }),
-              const SizedBox(height: 30.0,),
-              Consumer<EditWordViewModel>(
-                  builder: (context,model,child){
-                    return WordTextInput(
-                      label: "答え",
-                      textEditingController: model.answerController);
-                     // isQuestionEnabled: model.isQuestionEnabled,);
-                  }),
-              const SizedBox(height: 30.0,),
+          //ChangeNotifierProviderを上に置きつつ、開いたときにgetTitleTextするためにBuilder設定
+          child:Builder(builder: (context){
+            //画面遷移したときinitState的にstatusの違いでText(新しい単語の追加 or 登録した単語の修正)というインスタンスをモデルの方で作っておく
+            final model = Provider.of<EditWordViewModel>(context,listen: false);
+            Future(()=>model.getTitleText(status,word));
+              return
 
-//              WordTextInput(label: "答え",textEditingController: _answerController),
-            ],
-          ),
-        ),
+          WillPopScope(//戻るときに単にpopではなく、pushReplace
+             onWillPop: ()=> _backToListScreen(context),
+             child: Scaffold(
+               appBar: AppBar(
+                 title:
+                 Consumer<EditWordViewModel>(builder: (context,model,child){
+                   return model.titleText;
+                 }),
+                 actions: <Widget>[
+                   IconButton(
+                     tooltip: "登録",
+                     icon: Icon(Icons.check),
+                     onPressed: ()=>_onWordRegistered(context,status),),
+                 ],
+               ),
+               body:AddEditBody(),
       ),
     );
+          },
+          )
+      );
   }
 
 //  todo 単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
@@ -86,14 +61,14 @@ class AddEditScreen extends StatelessWidget {
     final viewModel = Provider.of<EditWordViewModel>(context,listen: false);
     print(viewModel.questionController.text);
     print(viewModel.answerController.text);
-//    viewModel.onRegisteredWord(status);
-    if(status == EditStatus.add){
-      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
-        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
-        return;
+    viewModel.onRegisteredWord(status);
+//    if(status == EditStatus.add){
+//      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
+//        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
+//        return;
       }
 
-      viewModel.insertWord();
+//      viewModel.insertWord();
 
 //      var word = Word(
 //        strQuestion: viewModel.questionController.text,
@@ -120,7 +95,7 @@ class AddEditScreen extends StatelessWidget {
       return;
     }
     */
-}
+
 
   Future<bool> _backToListScreen(BuildContext context) {
     Navigator.pushReplacement(
@@ -130,4 +105,58 @@ class AddEditScreen extends StatelessWidget {
     return Future.value(false);
   }
 
+
+
+//イベント通知するのにbodyだけStatefulに
+class AddEditBody extends StatefulWidget {
+  @override
+  _AddEditBodyState createState() => _AddEditBodyState();
+}
+
+class _AddEditBodyState extends State<AddEditBody> {
+
+  @override
+  void initState() {
+    super.initState();
+    final viewModel = Provider.of<EditWordViewModel>(context, listen: false);
+    viewModel.loginSuccessAction.stream.listen((st) {
+      print(st);
+      Toast.show("$st登録完了！",context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context)=>ListWordScreen())
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          const SizedBox(height: 20.0,),
+          const Text("問題と答えを入力して「登録」ボタンを押してください"),
+          const SizedBox(height: 40.0,),
+          Consumer<EditWordViewModel>(
+              builder: (context,model,child){
+                return WordTextInput(
+                  label: "問題",
+                  textEditingController: model.questionController,
+                  isQuestionEnabled: model.isQuestionEnabled,);
+              }),
+          const SizedBox(height: 30.0,),
+          Consumer<EditWordViewModel>(
+              builder: (context,model,child){
+                return WordTextInput(
+                    label: "答え",
+                    textEditingController: model.answerController);
+                // isQuestionEnabled: model.isQuestionEnabled,);
+              }),
+          const SizedBox(height: 30.0,),
+
+//              WordTextInput(label: "答え",textEditingController: _answerController),
+        ],
+      ),
+    );
+  }
 }

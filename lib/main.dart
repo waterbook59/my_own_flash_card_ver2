@@ -26,9 +26,7 @@ void main() {
         ChangeNotifierProvider(
           create: (context)=>TestWordViewModel(),
         ),
-        ChangeNotifierProvider(
-          create: (context)=>EditWordViewModel(),
-        ),
+
         ChangeNotifierProvider(
           create: (context)=>HomeScreenViewModel(),
         ),

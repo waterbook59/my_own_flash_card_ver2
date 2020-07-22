@@ -17,7 +17,7 @@ class EditWordViewModel extends ChangeNotifier {
   TextEditingController _answerController = TextEditingController();
   List<Word> _words=List();
   //Stream関連
-  var _loginSuccessAction = StreamController<String>.broadcast();
+  StreamController<String> _loginSuccessAction = StreamController<String>.broadcast();
   UiState _uiState = UiState.Idle;
 
 
@@ -88,6 +88,19 @@ class EditWordViewModel extends ChangeNotifier {
   void dispose() {
     _loginSuccessAction.close();
     super.dispose();
+  }
+
+  void onRegisteredWord(EditStatus status) {
+    //    if(status == EditStatus.add){
+//      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
+//        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
+//        return;
+
+    Future.delayed(Duration(milliseconds: 1500)).then((_) {
+      // Login Success!
+      _loginSuccessAction.sink.add("${_questionController.text}");
+    });
+
   }
 
 }
