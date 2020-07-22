@@ -7,8 +7,10 @@ class ButtonWithIcon extends StatelessWidget {
   final String label;
   final Color color;
 
+  final Color textColor;
 
-  ButtonWithIcon({@required this.onPressed,this.icon,this.label,this.color});
+
+  ButtonWithIcon({@required this.onPressed,this.icon,this.label,this.color,this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class ButtonWithIcon extends StatelessWidget {
         child: RaisedButton.icon(
             onPressed: onPressed,
             icon: icon,
-            label: Text(label,style: TextStyle(fontSize: 18.0),),
+            label: Text(label,style: TextStyle(fontSize: 18.0,color: textColor),),
             shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
             color: color,
         ),

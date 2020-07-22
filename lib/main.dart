@@ -6,6 +6,7 @@ import 'package:myownflashcardver2/view/screens/screen_home.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/login_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/test_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ void main() {
         ChangeNotifierProvider(
           create: (context)=>HomeScreenViewModel(),
         ),
+//ここにあったLoginViewModelは移動
       ],
       child: MyApp(),
     )

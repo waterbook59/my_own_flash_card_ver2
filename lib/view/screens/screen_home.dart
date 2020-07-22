@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
+import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
+import 'package:myownflashcardver2/view/screens/pages/login_page.dart';
 import 'package:myownflashcardver2/view/screens_before/test_screen.dart';
 import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
@@ -59,7 +61,7 @@ class ScreenHome extends StatelessWidget {
             ),
 //           ); _radioButtons(),
             //_switch(),
-            const SizedBox(height: 25.0,),
+            const SizedBox(height: 15.0,),
             ButtonWithIcon(
               // 一覧画面ボタン onPressed
               onPressed: () => _confirmWordList(context),
@@ -67,14 +69,22 @@ class ScreenHome extends StatelessWidget {
               icon: Icon(Icons.list),
               color: Colors.indigo,
             ),
-            const SizedBox(height: 15.0,),
+            const SizedBox(height: 10.0,),
             ButtonWithIcon(
               onPressed: () => _lookListTest(context),
               label: "リファクタリングボタン",
               icon: Icon(Icons.account_balance_wallet),
               color: Colors.amber,
             ),
-            const SizedBox(height: 20.0,),
+            const SizedBox(height: 10.0,),
+            ButtonWithIcon(
+              onPressed: () => _streamTest(context),
+              label: "ストリームボタン",
+              icon: Icon(Icons.label),
+              color: Colors.lightGreenAccent,
+              textColor: Colors.black87,
+            ),
+            const SizedBox(height: 15.0,),
             const Text("powered by Ikuto/Tatsuki 2020"),
             const SizedBox(height: 20.0,),
           ],
@@ -113,6 +123,14 @@ class ScreenHome extends StatelessWidget {
 
     final viewModel= Provider.of<HomeScreenViewModel>(context,listen: false);
     viewModel.selected(value);
+
+  }
+
+  _streamTest(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
 
   }
 

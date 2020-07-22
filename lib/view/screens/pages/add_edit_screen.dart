@@ -4,6 +4,7 @@ import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/view/components/word_text_input.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 
 import 'list_word_screen.dart';
@@ -45,7 +46,7 @@ class AddEditScreen extends StatelessWidget {
             IconButton(
               tooltip: "登録",
               icon: Icon(Icons.check),
-              onPressed: ()=>_onWordRegistered(context),
+              onPressed: ()=>_onWordRegistered(context,status),
             ),
           ],
         ),
@@ -70,6 +71,8 @@ class AddEditScreen extends StatelessWidget {
                       textEditingController: model.answerController);
                      // isQuestionEnabled: model.isQuestionEnabled,);
                   }),
+              const SizedBox(height: 30.0,),
+
 //              WordTextInput(label: "答え",textEditingController: _answerController),
             ],
           ),
@@ -79,23 +82,44 @@ class AddEditScreen extends StatelessWidget {
   }
 
 //  todo 単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
-  Future<void>  _onWordRegistered(BuildContext context) async{
+  Future<void>  _onWordRegistered(BuildContext context, EditStatus status) async{
     final viewModel = Provider.of<EditWordViewModel>(context,listen: false);
     print(viewModel.questionController.text);
     print(viewModel.answerController.text);
- /*
+//    viewModel.onRegisteredWord(status);
+    if(status == EditStatus.add){
+      if(viewModel.questionController.text ==""|| viewModel.answerController.text == ""){
+        Toast.show("問題とこたえの両方を入力しないと登録できません。", context, duration: Toast.LENGTH_LONG);
+        return;
+      }
+
+      viewModel.insertWord();
+
+//      var word = Word(
+//        strQuestion: viewModel.questionController.text,
+//        strAnswer: viewModel.answerController.text,
+//      );
+      //try-catchはレポジトリへ
+      /*
+        try{
+          await viewModel.addWord(word);
+        }on SqliteException catch(e){
+
+        }
+      */
+    }
+
+    //statusの分岐をここで行うがinsertWord,updateWordというメソッドには切り分けず、部分的に必要なところをviewModelへ外注してみる
+    /*
     if(status == EditStatus.add) {
-      await _insertWord();
-      //外に出したWidgetから入力したテキストを取ってくる
-//      print(testText.text);
+      await viewModel.insertWord();
       return;
     }
     if(status == EditStatus.edit){
-      await _modifiedWord();
+      await viewModel.modifiedWord();
       return;
     }
-
-  */
+    */
 }
 
   Future<bool> _backToListScreen(BuildContext context) {
@@ -105,4 +129,5 @@ class AddEditScreen extends StatelessWidget {
     );
     return Future.value(false);
   }
+
 }

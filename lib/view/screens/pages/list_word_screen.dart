@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
 import 'package:myownflashcardver2/view/components/memorized_checked_icon.dart';
 import 'package:myownflashcardver2/view/components/word_item.dart';
+import 'package:myownflashcardver2/view/screens/pages/edit_stream_screen.dart';
+import 'package:myownflashcardver2/view/screens/pages/login_page.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -95,7 +97,7 @@ class ListWordScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => AddEditScreen(
+          builder: (context) => EditStreamScreen(
             status: EditStatus.add,
           )
       ),
