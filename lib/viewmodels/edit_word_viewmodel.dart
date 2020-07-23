@@ -57,7 +57,6 @@ class EditWordViewModel extends ChangeNotifier {
 
   }
 
-  //toastは本来viewModel層が良さそうやけど、難しいからcallback的にview層が良さげ
 
   Future<void> insertWord()async {
     var word = Word(
@@ -95,25 +94,29 @@ class EditWordViewModel extends ChangeNotifier {
   }
 
   Future<void> onRegisteredWord(EditStatus status) async{
-    //ここでstatusによってaddとupdateの条件設定
+
+    //文字登録
+    Word word = Word(
+      strQuestion: _questionController.text,
+      strAnswer: _answerController.text,
+      strTime: DateTime.now(),
+      isMemorized: false,
+    );
+
+
+  //ここでstatusによってaddとupdateの条件設定
     if (status == EditStatus.add) {
       if (_questionController.text == "" || _answerController.text == "") {
       //sink.addでStringじゃなくてイベントを渡して状態でNavigator.pushReplacementする・しないを分ける
         _loginSuccessAction.sink.add(Event.empty);
         return;
       }
-      //文字登録
-      var word = Word(
-        strQuestion: _questionController.text,
-        strAnswer: _answerController.text,
-        strTime: DateTime.now(),
-        isMemorized: false,
-      );
 
       //repositoryから返ってきたイベントを格納する
       _eventStatus =await _repository.addWord(word);
 
-      //エラー受け取ったらToastうまく登録できたらclear
+      //うまく登録できたらclear or エラー受け取ったらToast
+      //todo eventStatusをsink.addする記載が重複してるから後々リファクタリング
       if(_eventStatus==Event.add){
         _loginSuccessAction.sink.add(Event.add);
         _questionController.clear();
@@ -125,15 +128,6 @@ class EditWordViewModel extends ChangeNotifier {
         return;
       }
 
-      // Toast.show("この問題はすでに登録されているので登録できません", context, duration: Toast.LENGTH_LONG);
-
-
-
-
-
-
-
-
       //thenではなくasync/awaitに書き換え
 //      await Future.delayed(Duration(milliseconds: 750));
 //      _loginSuccessAction.sink.add(Event.add);
@@ -144,11 +138,19 @@ class EditWordViewModel extends ChangeNotifier {
 //        return;
 //      });
     }
-    if(status == EditStatus.edit){
-      _loginSuccessAction.sink.add(Event.update);
-      return;
-    }
 
+    if(status == EditStatus.edit){
+      //レポジトリ層へ更新投げる
+      _eventStatus =await _repository.insertWord(word);
+      if(_eventStatus==Event.update){
+        _loginSuccessAction.sink.add(Event.update);
+        return;
+      }
+      if(_eventStatus==Event.adderror){
+        _loginSuccessAction.sink.add(Event.adderror);
+        return;
+      }
+    }
 
   }
 

@@ -59,21 +59,6 @@ class AddEditScreen extends StatelessWidget {
 //    print(viewModel.answerController.text);
     viewModel.onRegisteredWord(status);
       }
-
-//      viewModel.insertWord();
-
-//      var word = Word(
-//        strQuestion: viewModel.questionController.text,
-//        strAnswer: viewModel.answerController.text,
-//      );
-      //try-catchはレポジトリへ
-      /*
-        try{
-          await viewModel.addWord(word);
-        }on SqliteException catch(e){
-
-        }
-      */
     }
 
     //statusの分岐をここで行うがinsertWord,updateWordというメソッドには切り分けず、部分的に必要なところをviewModelへ外注してみる

@@ -47,17 +47,15 @@ class WordsRepository  {
   }
 
 
-  Future<void> insertWord(Word word) async{
-
-        try{
-          await database.addWord(word);
-        //本来ここでtoast(登録完了)
-        }on SqliteException catch(error){
-          //本来ここでtoast(この問題はすでに登録されているので登録できません)
-          print("この問題はすでに登録:$error");
-        }
-
-
+  Future<Event> insertWord(Word word) async{
+    try{
+      await database.updateWord(word);
+      dbEvent =Event.update;
+      return dbEvent;
+    }on SqliteException catch(error){
+      print("repositoryでのエラー：この問題はすでに登録$error");
+      dbEvent =Event.adderror;
+    }return dbEvent;
   }
 
 //  wordDeleted() {}
