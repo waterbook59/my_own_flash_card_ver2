@@ -90,7 +90,6 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
     super.initState();
     final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
     viewModel.deleteAction.stream.listen((event) {
-      //TODO AlertDialog挿入
     Toast.show("削除完了しました", context);
     });
   }
@@ -118,9 +117,34 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
 
   Future<void> _onWordDeleted(word, BuildContext context) async {
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-    await viewModel.onDeletedWord(word);
-    await viewModel.getWordList();
+//    await viewModel.onDeletedWord(word);
+//    await viewModel.getWordList();
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => AlertDialog(
+          title: Text("『${word.strQuestion}』の削除"),
+          content:const Text("削除してもいいですか？"),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () async {
+                await viewModel.onDeletedWord(word);
+                await viewModel.getWordList();
+                Navigator.pop(context);
+              },
+              child: Text("はい"),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("いいえ"),
+            ),
+          ],
+        ));
   }
+
   _upDateWord( updateWord, BuildContext context) {
     //分岐した後の表示は遷移先で実装
     Navigator.pushReplacement(
