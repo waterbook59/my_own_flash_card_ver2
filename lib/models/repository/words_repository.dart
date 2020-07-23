@@ -27,11 +27,6 @@ class WordsRepository  {
     return result;
   }
 
-  //addWord,update,delete戻り値はvoidで良い？？
-//  Future<void> addWord(word) async{
-//    await database.addWord(word);
-//    return;
-//  }
 
   Future<Event> addWord(word) async{
     //returnするイベントを定義してイベントの状態をviewmodelに返す＆Future<void>からFuture<Event>変更
