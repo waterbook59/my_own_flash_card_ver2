@@ -86,7 +86,7 @@ class EditWordViewModel extends ChangeNotifier {
 //      _loginSuccessAction.sink.add("ストリーム！！");
 //    });
 //  }
-
+  //todo disposeをどこで使うのか確認
   @override
   void dispose() {
     _loginSuccessAction.close();
@@ -117,6 +117,9 @@ class EditWordViewModel extends ChangeNotifier {
 
       //うまく登録できたらclear or エラー受け取ったらToast
       //todo eventStatusをsink.addする記載が重複してるから後々リファクタリング
+      _loginSuccessAction.sink.add(_eventStatus);
+      return;
+
       if(_eventStatus==Event.add){
         _loginSuccessAction.sink.add(Event.add);
         _questionController.clear();
@@ -142,6 +145,9 @@ class EditWordViewModel extends ChangeNotifier {
     if(status == EditStatus.edit){
       //レポジトリ層へ更新投げる
       _eventStatus =await _repository.insertWord(word);
+      _loginSuccessAction.sink.add(_eventStatus);
+      return;
+
       if(_eventStatus==Event.update){
         _loginSuccessAction.sink.add(Event.update);
         return;
@@ -152,6 +158,12 @@ class EditWordViewModel extends ChangeNotifier {
       }
     }
 
+  }
+
+//うまく登録できたらclear
+  void textClear() {
+    _questionController.clear();
+    _answerController.clear();
   }
 
 }

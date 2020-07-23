@@ -85,8 +85,8 @@ class _WordListScreenState extends State<WordListScreen> {
   Widget _wordItem(int position) {
     return Card(
       elevation: 5.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      color: Colors.indigo,
+      shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      color:  Colors.indigo,
       child: ListTile(
         title: Text("${_wordList[position].strQuestion}"),
         subtitle: Text(

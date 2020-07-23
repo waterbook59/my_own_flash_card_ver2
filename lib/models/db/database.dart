@@ -15,7 +15,7 @@ part 'database.g.dart';
 
 //step3.問題と答えの項目を入れるテーブルクラス定義
 //moorのTableをimportすること
-
+//TODO エンティティとしてWordではなくWordRecordを作って格納する
 class Words extends Table {
   //Table内でTextColumnメソッドを使ってカラム設置
   //ちなみにautoIncrementで行番号自動で増やしたりなどの制約をかけることができる
@@ -32,7 +32,6 @@ class Words extends Table {
       get primaryKey => {strQuestion};
    */
     @override
-  // TODO: implement primaryKey
   Set<Column> get primaryKey => {strQuestion};
 }
 
@@ -45,7 +44,7 @@ class MyDatabase extends _$MyDatabase {
   //step6 MyDatabaseをoption+enterでCreate 1 missing overridesでschemaVersion出でくるので、
   //はじめ１に設定
   @override
-  // TODO: implement schemaVersion 初期値throw UnimplementedError()
+  //  初期値throw UnimplementedError()
   //Migrationするのに1から2へ変更
   int get schemaVersion => 2;
 

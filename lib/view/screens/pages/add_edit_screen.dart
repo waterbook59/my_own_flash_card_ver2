@@ -103,7 +103,8 @@ class _AddEditBodyState extends State<AddEditBody> {
           Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
           break;
         case Event.add:
-          Toast.show("750ms待って「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
+          Toast.show("「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
+          viewModel.textClear();
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context)=>ListWordScreen()));
@@ -112,7 +113,7 @@ class _AddEditBodyState extends State<AddEditBody> {
           Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
           break;
         case Event.update:
-          Toast.show("更新しました", context);
+          Toast.show("「${viewModel.questionController.text}」更新しました", context);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context)=>ListWordScreen()));

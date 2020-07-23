@@ -38,7 +38,8 @@ class WordsRepository  {
     //最終的にproxyproviderで自動通知できる？
     print("repositoryでのエラー：${e.toString()}");
     dbEvent =Event.adderror;
-    } return dbEvent;
+    }
+    return dbEvent;
   }
 
 
@@ -50,7 +51,14 @@ class WordsRepository  {
     }on SqliteException catch(error){
       print("repositoryでのエラー：この問題はすでに登録$error");
       dbEvent =Event.adderror;
-    }return dbEvent;
+    }
+    return dbEvent;
+  }
+
+  Future<Event> deleteWord(Word selectedWord) async{
+    await database.deleteWord(selectedWord);
+    dbEvent = Event.delete;
+    return dbEvent;
   }
 
 //  wordDeleted() {}
