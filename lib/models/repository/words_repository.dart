@@ -17,6 +17,12 @@ class WordsRepository  {
   return result;
   }
 
+  Future<List<Word>> getMemorizedExcludeWordList() async{
+    result = await database.memorizedExcludeWords;
+    return result;
+  }
+
+
   Future<List<Word>> allWordsSorted() async{
     result = await database.allWordsSorted;
     return result;

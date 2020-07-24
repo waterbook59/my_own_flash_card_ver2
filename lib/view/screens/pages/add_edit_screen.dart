@@ -52,7 +52,7 @@ class AddEditScreen extends StatelessWidget {
       );
   }
 
-//  todo 単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
+//   単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
   Future<void>  _onWordRegistered(BuildContext context, EditStatus status) async{
     final viewModel = Provider.of<EditWordViewModel>(context,listen: false);
 //    print(viewModel.questionController.text);

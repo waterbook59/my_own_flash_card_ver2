@@ -76,17 +76,17 @@ class MyDatabase extends _$MyDatabase {
   Future addWord(Word word) =>into(words).insert(word);
 
   //Read(抽出)  参考：loads all todo entries
-  // 全データ取ってくる Databaseクラス内のプロパティに設定して取ってくる
+  // 1.全データ取ってくる Databaseクラス内のプロパティに設定して取ってくる
   //全データなので、戻り値List
   //select(テーブルクラス名)
   Future<List<Word>> get allWords => select(words).get();
-  //暗記済がfalse(暗記してないもの)だけを取ってくるクエリ
+  //2.暗記済がfalse(暗記してないもの)だけを取ってくるクエリ
   Future<List<Word>> get memorizedExcludeWords => (select(words)..where((t)=>t.isMemorized.equals(false))).get();
-  //暗記済のものが後ろになるように取ってくるクエリ（並び替えなのでorder by）
+  //3.暗記済のものが後ろになるように取ってくるクエリ（並び替えなのでorder by）
   //bool型はOrderingTermデフォルトのasc(昇順)ならtrueが0,falseが1の順
   Future<List<Word>> get allWordsSorted => (select(words)..orderBy([(t)=>OrderingTerm(expression: t.isMemorized)])).get();
 
-  //練習で登録日時順で取ってくる
+  //4.練習で登録日時順で取ってくる
   Future<List<Word>> get timeSorted => (select(words)..orderBy([(t)=>OrderingTerm(expression: t.strTime,mode: OrderingMode.desc)])).get();
 
   //Update(更新) 参考：Updates and deletes

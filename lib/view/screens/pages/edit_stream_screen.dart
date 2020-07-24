@@ -15,9 +15,6 @@ class EditStreamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-//    final model = Provider.of<EditWordViewModel>(context,listen: false);
-//    Future(()=>model.getTitleText(status,word));
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

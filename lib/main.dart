@@ -7,7 +7,7 @@ import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/login_viewmodel.dart';
-import 'package:myownflashcardver2/viewmodels/test_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 //step8
@@ -24,7 +24,7 @@ void main() {
           create: (context)=>ListWordViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (context)=>TestWordViewModel(),
+          create: (context)=>CheckTestViewModel(),
         ),
 
         ChangeNotifierProvider(

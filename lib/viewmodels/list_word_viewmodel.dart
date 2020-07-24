@@ -16,7 +16,7 @@ class ListWordViewModel extends ChangeNotifier {
 //  ListWordViewModel({repository}):
 //      _repository =repository;
 
-  //直接database参照しないように別のList<WordRecord>とかが必要？
+  //TODO 直接database参照しないように別のList<WordRecord>とかが必要？
   List<Word> _words=List();
   StreamController<Event> _deleteAction = StreamController<Event>.broadcast();
   Event _eventStatus;
@@ -49,6 +49,7 @@ class ListWordViewModel extends ChangeNotifier {
     _deleteAction.sink.add(_eventStatus);
   }
 
+  //TODO いつstreamをdisposeするか確認
   @override
   void dispose() {
     super.dispose();

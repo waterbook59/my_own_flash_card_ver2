@@ -30,7 +30,7 @@ class RadioButtons extends StatelessWidget {
           value: Memorized.includedWords,
           groupValue: wordTestType,
           // ラジオボタン(暗記済除外)onChanged
-          //ValuChangedなので、右辺にもvalue値必須！！！！
+          //ValueChangedなので、右辺にもvalue値必須！！！！
           onChanged: (value)=>onRadioSelected(value),
     ),
         RadioListTile(

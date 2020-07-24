@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
+import 'package:myownflashcardver2/view/screens/pages/check_test_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/login_page.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 class ScreenHome extends StatelessWidget {
 
   //とりあえずページ遷移のところはincludedで
+  //TODO あとでviewModelからtestTypeの初期値getterで取ってくる形に変更
  final Memorized testType = Memorized.includedWords;
 
   @override
@@ -94,13 +96,11 @@ class ScreenHome extends StatelessWidget {
   }
 
 
-
-
   _testStart(BuildContext context) {
     final viewModel= Provider.of<HomeScreenViewModel>(context,listen: false);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TestScreen(testType: viewModel.testRadioType,)),
+      MaterialPageRoute(builder: (context) => CheckTestScreen(testType: viewModel.testRadioType,)),
     );
   }
 
@@ -120,10 +120,8 @@ class ScreenHome extends StatelessWidget {
   }
 
    changeRadioButton(Memorized value,BuildContext context) {
-
     final viewModel= Provider.of<HomeScreenViewModel>(context,listen: false);
     viewModel.selected(value);
-
   }
 
   _streamTest(BuildContext context) {
@@ -131,7 +129,6 @@ class ScreenHome extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (context) => HomePage()),
     );
-
   }
 
 // Future<void> checkSort(,BuildContext context) async{

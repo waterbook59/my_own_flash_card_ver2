@@ -86,6 +86,7 @@ class EditWordViewModel extends ChangeNotifier {
 //      _loginSuccessAction.sink.add("ストリーム！！");
 //    });
 //  }
+
   //todo disposeをどこで使うのか確認
   @override
   void dispose() {
@@ -116,7 +117,6 @@ class EditWordViewModel extends ChangeNotifier {
       _eventStatus =await _repository.addWord(word);
 
       //うまく登録できたらclear or エラー受け取ったらToast
-      //todo eventStatusをsink.addする記載が重複してるから後々リファクタリング
       _loginSuccessAction.sink.add(_eventStatus);
       return;
 
