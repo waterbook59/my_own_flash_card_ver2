@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class QuestionImage extends StatelessWidget {
 
   final String questionWord;
-
   QuestionImage({this.questionWord});
 
 

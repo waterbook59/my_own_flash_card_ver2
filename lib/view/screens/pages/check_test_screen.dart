@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
+import 'package:myownflashcardver2/data/test_status.dart';
+import 'package:myownflashcardver2/view/components/answer_image.dart';
 import 'package:myownflashcardver2/view/components/fab.dart';
+import 'package:myownflashcardver2/view/components/memorized_check.dart';
 import 'package:myownflashcardver2/view/components/question_image.dart';
 import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +12,7 @@ class CheckTestScreen extends StatelessWidget {
 
   final Memorized testType;
   final bool  isFabVisible =true;
-  final bool isQuestionPart =false;
+
 
   CheckTestScreen({this.testType});
 
@@ -44,38 +47,64 @@ class CheckTestScreen extends StatelessWidget {
                               return Center(child: Text(model.remainedQuestion.toString(), style: TextStyle(fontSize: 20.0),));
                             },
                           ),
-
                         ],
                       ),
                     ]
                 ),
               ),
               const SizedBox(height: 25.0,),
-              //TODO QuestionImageへ渡す文字とContainerの代わりにExpandで空の箱を作る
-//              Consumer<CheckTestViewModel>(
-//                builder: (context,model,child){
-//                  return isQuestionPart?QuestionImage(model.words[index].strQuetison.toString()):Container();
-//                },
-//              ),
-
+              //TODO Containerの代わりにExpandで空の箱を作る
+              Consumer<CheckTestViewModel>(
+                builder: (context,model,child){
+                  return model.isQuestionPart
+                      ? QuestionImage(questionWord: model.words[model.index].strQuestion.toString(),)
+                      : Container();
+                },
+              ),
               const SizedBox(height: 30.0,),
-              //TODO AnswerImageへ渡す文字とContainerの代わりにExpandで空の箱を作る
-         //     _answerImage(),
+              //TODO Containerの代わりにExpandで空の箱を作る
+              Consumer<CheckTestViewModel>(
+                builder: (context,model,child){
+                  return model.isAnswerPart
+                      ? AnswerImage(answerWord: model.words[model.index].strAnswer.toString(),)
+                      : Container();
+                },
+              ),
               const SizedBox(height: 25.0,),
               //TODO MemorizedCheck作る
-             // _memorizedCheck(),
+              Consumer<CheckTestViewModel>(
+                builder: (context,model,child){
+                  return model.isMemorizedCheck
+                      ? MemorizedCheck(
+                        isMemorized: model.isMemorized,
+                        checkButton: (value) =>clickCheckButton(value,context),
+                        )
+                      : Container();
+                },
+              ),
             ],),
             //TODO endMessage作る
             //_endMessage(),
           ],
         ),
-        floatingActionButton: isFabVisible ? Fab(goNextState: ()=>changeState(),) : null,
+        floatingActionButton:
+        Consumer<CheckTestViewModel>(
+          builder: (context,model,child){
+            return isFabVisible
+                ? Fab(goNextState: ()=>changTestState(context,model.testStatus),)
+                : null;
+          },
+        ),
+
       ),
     );
   }
 
-  changeState() {
-    print("ここに条件");
+  Future<void> changTestState(BuildContext context,TestStatus testState) async{
+    print("ここに条件:$context");
+    final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
+    viewModel.changeTestStatus(testState);
+
   }
 
 //TODO FinihTestScreen仕上げる
@@ -106,6 +135,13 @@ class CheckTestScreen extends StatelessWidget {
     )
     )?? false;
   }
+
+  //isMemorizedの値がvalueに入ってくるので、checkTestViewModel内で_isMemorized=valueへ変更する
+  //Futureじゃなくていいかも
+ Future<void> clickCheckButton(bool value,BuildContext context) async{
+   final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
+   viewModel.clickCheckButton(value);
+ }
 
 
 
