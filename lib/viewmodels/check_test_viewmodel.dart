@@ -52,6 +52,12 @@ class CheckTestViewModel extends ChangeNotifier  {
       print("覚えたモノ以外のデータ：$_words");
       _remainedQuestion=_words.length;
       _words.shuffle();
+      _isQuestionPart =false;
+      _isAnswerPart = false;
+      _isMemorizedCheck =false;
+      _isFabVisible =true;
+      _isEndMessageVisible =false;
+      _index=-1;
       _testStatus = TestStatus.before_start;
       notifyListeners();
       break;

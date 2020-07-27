@@ -12,8 +12,6 @@ class CheckTestScreen extends StatelessWidget {
 
   final Memorized testType;
 
-
-
   CheckTestScreen({this.testType});
 
   @override
@@ -21,14 +19,17 @@ class CheckTestScreen extends StatelessWidget {
 
     //TODO 受け取ったtestTypeによって取得するデータをviewModel内の条件で変える
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
-    Future((){
+    Future(()=>viewModel.getWordList(testType));
+    //listen:trueにするとデータ取得し続けてしまう
+//    final viewModel = Provider.of<CheckTestViewModel>(context);
+//    Future((){
 //      viewModel.isQuestionPart;
 //      viewModel.isAnswerPart;
 //      viewModel.isMemorizedCheck;
 //      viewModel.isFabVisible;
 //      viewModel.isEndMessageVisible;
-      viewModel.getWordList(testType);
-    });
+//      viewModel.index;
+//    });
 
 
     return WillPopScope(
@@ -60,21 +61,21 @@ class CheckTestScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25.0,),
-              //TODO Containerの代わりにExpandで空の箱を作る
+              // Containerの代わりにTextで空の箱を作る
               Consumer<CheckTestViewModel>(
                 builder: (context,model,child){
                   return model.isQuestionPart
                       ? QuestionImage(questionWord: model.words[model.index].strQuestion.toString(),)
-                      : Container();
+                      : const Text("");
                 },
               ),
               const SizedBox(height: 30.0,),
-              //TODO Containerの代わりにExpandで空の箱を作る
+              // Containerの代わりにTextで空の箱を作る
               Consumer<CheckTestViewModel>(
                 builder: (context,model,child){
                   return model.isAnswerPart
                       ? AnswerImage(answerWord: model.words[model.index].strAnswer.toString(),)
-                      : Container();
+                      : const Text("");
                 },
               ),
               const SizedBox(height: 25.0,),
@@ -85,7 +86,7 @@ class CheckTestScreen extends StatelessWidget {
                         isMemorized: model.isMemorized,
                         checkButton: (value) =>clickCheckButton(value,context),
                         )
-                      : Container();
+                      : const Text("");
                 },
               ),
             ],),
@@ -93,7 +94,7 @@ class CheckTestScreen extends StatelessWidget {
               builder: (context,model,child){
                 return model.isEndMessageVisible
                     ? Center(child: Text("テスト終了",style: TextStyle(fontSize: 50.0),))
-                    : Container();
+                    : const Text("");;
               },
             ),
           ],
@@ -103,7 +104,7 @@ class CheckTestScreen extends StatelessWidget {
              builder: (context,model,child){
                 return model.isFabVisible
                     ? Fab(goNextState: ()=>changTestState(context,model.testStatus),)
-                    : Container();//nullじゃなくてContainer
+                    : const Text("");//nullじゃなくてText
              },
           ),
       ),
@@ -117,13 +118,13 @@ class CheckTestScreen extends StatelessWidget {
 
   }
 
-//TODO FinihTestScreen仕上げる
+// finishTestScreenはそのまま
   Future<bool> _finishTestScreen(BuildContext context) async{
 
     //1. onWillPopの戻り値はFuture<bool>なのでメソッドの頭にFuture<bool>,returnでshowDialogで返す
     //2. showDialogの戻り値はFutureなので非同期処理でasync/awaitにする
     //3. Navigator.pop×2だと、showDialogは戻り値としてboolが返ってこないので、nullを避けるため、
-    //4. showDialog()??false;で三項条件演算子でfalseにしてNavigator.popを避ける
+    //4. showDialog()??false;で三項条件演算子でfalseにして元々AppBarのでデフォルトで設定されているNavigator.popを避ける
 
     return await showDialog(context: context, builder: (_) => AlertDialog(
       title: Text("テストの終了"),
