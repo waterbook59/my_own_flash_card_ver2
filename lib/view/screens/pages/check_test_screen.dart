@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class CheckTestScreen extends StatelessWidget {
 
   final Memorized testType;
-  final bool  isFabVisible =true;
+
 
 
   CheckTestScreen({this.testType});
@@ -21,7 +21,14 @@ class CheckTestScreen extends StatelessWidget {
 
     //TODO 受け取ったtestTypeによって取得するデータをviewModel内の条件で変える
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
-    Future(()=>viewModel.getWordList(testType));
+    Future((){
+//      viewModel.isQuestionPart;
+//      viewModel.isAnswerPart;
+//      viewModel.isMemorizedCheck;
+//      viewModel.isFabVisible;
+//      viewModel.isEndMessageVisible;
+      viewModel.getWordList(testType);
+    });
 
 
     return WillPopScope(
@@ -71,7 +78,6 @@ class CheckTestScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 25.0,),
-              //TODO MemorizedCheck作る
               Consumer<CheckTestViewModel>(
                 builder: (context,model,child){
                   return model.isMemorizedCheck
@@ -83,19 +89,23 @@ class CheckTestScreen extends StatelessWidget {
                 },
               ),
             ],),
-            //TODO endMessage作る
-            //_endMessage(),
+            Consumer<CheckTestViewModel>(
+              builder: (context,model,child){
+                return model.isEndMessageVisible
+                    ? Center(child: Text("テスト終了",style: TextStyle(fontSize: 50.0),))
+                    : Container();
+              },
+            ),
           ],
         ),
         floatingActionButton:
-        Consumer<CheckTestViewModel>(
-          builder: (context,model,child){
-            return isFabVisible
-                ? Fab(goNextState: ()=>changTestState(context,model.testStatus),)
-                : null;
-          },
-        ),
-
+          Consumer<CheckTestViewModel>(
+             builder: (context,model,child){
+                return model.isFabVisible
+                    ? Fab(goNextState: ()=>changTestState(context,model.testStatus),)
+                    : Container();//nullじゃなくてContainer
+             },
+          ),
       ),
     );
   }

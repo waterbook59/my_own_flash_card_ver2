@@ -212,6 +212,7 @@ class _TestScreenState extends State<TestScreen> {
           if(_remainedQuestion<=0){
             _showFinished();
           }else{
+            //ここでbefore_startに戻らず、show_questionにして、やることはbefore_start内の_showQuestion()
             _testStatus = TestStatus.show_question;
             _showQuestion();
 
@@ -220,8 +221,6 @@ class _TestScreenState extends State<TestScreen> {
         case TestStatus.finished:
           break;
       }
-
-
   }
 
    _showQuestion() {

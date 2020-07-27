@@ -67,6 +67,10 @@ class WordsRepository  {
     return dbEvent;
   }
 
+  Future<void> checkedUpdateFlag(Word updateWord) async{
+    await database.updateWord(updateWord);
+  }
+
 //  wordDeleted() {}
 
 }
