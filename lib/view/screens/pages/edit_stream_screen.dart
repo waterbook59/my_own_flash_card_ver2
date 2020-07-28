@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
-import 'package:myownflashcardver2/models/db/database.dart';
+import 'package:myownflashcardver2/models/model/words_model.dart';
+//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 

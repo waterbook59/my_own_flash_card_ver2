@@ -14,7 +14,7 @@ enum EditStatus { add, edit }
 
 class EditScreen extends StatefulWidget {
   final EditStatus status;
-  final Word word;
+  final WordRecord word;
 
   //Navigatorでこのページにくるときにstatusで分けるためコンストラクタ設定
   //statusとデータをwordListScreenから持ってくるために1行分のデータを設定
@@ -34,6 +34,8 @@ class _EditScreenState extends State<EditScreen> {
 
   //外に出したWidgetでも
   TextEditingController testText=TextEditingController();
+  //dao追加
+   final dao = database.wordsDao;
 
 
   //enumの分岐表示はinitStateで実装
@@ -235,7 +237,7 @@ class _EditScreenState extends State<EditScreen> {
               try,catch文を用いて重複の時はエラーをだす
             */
               //データ１行分のコンストラクタに入力値を初期設定
-              var word = Word(
+              var wordRecord = WordRecord(
                 strQuestion: _questionController.text,
                 strAnswer: _answerController.text,
                 strTime: DateTime.now(),
@@ -245,7 +247,7 @@ class _EditScreenState extends State<EditScreen> {
             try {
               //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
               //ちなみにdatabaseはmain.dartでインスタンス化済
-              await database.addWord(word);
+              await dao.addWord(wordRecord);
               //databaseへ文字登録が終わったらTextField空白にする
               _questionController.clear();
               _answerController.clear();
@@ -309,7 +311,7 @@ class _EditScreenState extends State<EditScreen> {
          FlatButton(
            child: Text("はい"),
            onPressed: () async{
-             var word = Word(
+             var wordRecord = WordRecord(
                strQuestion: _questionController.text,
                strAnswer: _answerController.text,
                strTime: DateTime.now(),
@@ -318,7 +320,7 @@ class _EditScreenState extends State<EditScreen> {
              try{
                //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
                //ちなみにdatabaseはmain.dartでインスタンス化済
-               await database.updateWord(word);
+               await dao.updateWord(wordRecord);
 
                /* chapter251 AlertDialogから直接一覧画面ページへ行くには
                Navigator.popでまずダイアログを除去

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-//ほんとは参照しない方がいい？
-import 'package:myownflashcardver2/models/db/database.dart';
+//db参照してはいけない
+//import 'package:myownflashcardver2/models/db/database.dart';
+import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'memorized_checked_icon.dart';
 
 class WordItem extends StatelessWidget {

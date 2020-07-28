@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/event.dart';
-//database参照してはいけないのでは・・・
-import 'package:myownflashcardver2/models/db/database.dart';
+//database参照してはいけない・
+//import 'package:myownflashcardver2/models/db/database.dart';
+import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class ListWordViewModel extends ChangeNotifier {

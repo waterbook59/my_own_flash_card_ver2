@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/data/test_status.dart';
-import 'package:myownflashcardver2/models/db/database.dart';
+import 'package:myownflashcardver2/models/model/words_model.dart';
+//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class CheckTestViewModel extends ChangeNotifier  {

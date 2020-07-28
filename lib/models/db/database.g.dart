@@ -7,23 +7,23 @@ part of 'database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class Word extends DataClass implements Insertable<Word> {
+class WordRecord extends DataClass implements Insertable<WordRecord> {
   final String strQuestion;
   final String strAnswer;
   final DateTime strTime;
   final bool isMemorized;
-  Word(
+  WordRecord(
       {@required this.strQuestion,
       @required this.strAnswer,
       @required this.strTime,
       @required this.isMemorized});
-  factory Word.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory WordRecord.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final boolType = db.typeSystem.forDartType<bool>();
-    return Word(
+    return WordRecord(
       strQuestion: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}str_question']),
       strAnswer: stringType
@@ -52,8 +52,8 @@ class Word extends DataClass implements Insertable<Word> {
     return map;
   }
 
-  WordsCompanion toCompanion(bool nullToAbsent) {
-    return WordsCompanion(
+  WordRecordsCompanion toCompanion(bool nullToAbsent) {
+    return WordRecordsCompanion(
       strQuestion: strQuestion == null && nullToAbsent
           ? const Value.absent()
           : Value(strQuestion),
@@ -69,10 +69,10 @@ class Word extends DataClass implements Insertable<Word> {
     );
   }
 
-  factory Word.fromJson(Map<String, dynamic> json,
+  factory WordRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Word(
+    return WordRecord(
       strQuestion: serializer.fromJson<String>(json['strQuestion']),
       strAnswer: serializer.fromJson<String>(json['strAnswer']),
       strTime: serializer.fromJson<DateTime>(json['strTime']),
@@ -90,12 +90,12 @@ class Word extends DataClass implements Insertable<Word> {
     };
   }
 
-  Word copyWith(
+  WordRecord copyWith(
           {String strQuestion,
           String strAnswer,
           DateTime strTime,
           bool isMemorized}) =>
-      Word(
+      WordRecord(
         strQuestion: strQuestion ?? this.strQuestion,
         strAnswer: strAnswer ?? this.strAnswer,
         strTime: strTime ?? this.strTime,
@@ -103,7 +103,7 @@ class Word extends DataClass implements Insertable<Word> {
       );
   @override
   String toString() {
-    return (StringBuffer('Word(')
+    return (StringBuffer('WordRecord(')
           ..write('strQuestion: $strQuestion, ')
           ..write('strAnswer: $strAnswer, ')
           ..write('strTime: $strTime, ')
@@ -120,25 +120,25 @@ class Word extends DataClass implements Insertable<Word> {
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
-      (other is Word &&
+      (other is WordRecord &&
           other.strQuestion == this.strQuestion &&
           other.strAnswer == this.strAnswer &&
           other.strTime == this.strTime &&
           other.isMemorized == this.isMemorized);
 }
 
-class WordsCompanion extends UpdateCompanion<Word> {
+class WordRecordsCompanion extends UpdateCompanion<WordRecord> {
   final Value<String> strQuestion;
   final Value<String> strAnswer;
   final Value<DateTime> strTime;
   final Value<bool> isMemorized;
-  const WordsCompanion({
+  const WordRecordsCompanion({
     this.strQuestion = const Value.absent(),
     this.strAnswer = const Value.absent(),
     this.strTime = const Value.absent(),
     this.isMemorized = const Value.absent(),
   });
-  WordsCompanion.insert({
+  WordRecordsCompanion.insert({
     @required String strQuestion,
     @required String strAnswer,
     @required DateTime strTime,
@@ -146,7 +146,7 @@ class WordsCompanion extends UpdateCompanion<Word> {
   })  : strQuestion = Value(strQuestion),
         strAnswer = Value(strAnswer),
         strTime = Value(strTime);
-  static Insertable<Word> custom({
+  static Insertable<WordRecord> custom({
     Expression<String> strQuestion,
     Expression<String> strAnswer,
     Expression<DateTime> strTime,
@@ -160,12 +160,12 @@ class WordsCompanion extends UpdateCompanion<Word> {
     });
   }
 
-  WordsCompanion copyWith(
+  WordRecordsCompanion copyWith(
       {Value<String> strQuestion,
       Value<String> strAnswer,
       Value<DateTime> strTime,
       Value<bool> isMemorized}) {
-    return WordsCompanion(
+    return WordRecordsCompanion(
       strQuestion: strQuestion ?? this.strQuestion,
       strAnswer: strAnswer ?? this.strAnswer,
       strTime: strTime ?? this.strTime,
@@ -192,10 +192,11 @@ class WordsCompanion extends UpdateCompanion<Word> {
   }
 }
 
-class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
+class $WordRecordsTable extends WordRecords
+    with TableInfo<$WordRecordsTable, WordRecord> {
   final GeneratedDatabase _db;
   final String _alias;
-  $WordsTable(this._db, [this._alias]);
+  $WordRecordsTable(this._db, [this._alias]);
   final VerificationMeta _strQuestionMeta =
       const VerificationMeta('strQuestion');
   GeneratedTextColumn _strQuestion;
@@ -249,13 +250,13 @@ class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   List<GeneratedColumn> get $columns =>
       [strQuestion, strAnswer, strTime, isMemorized];
   @override
-  $WordsTable get asDslTable => this;
+  $WordRecordsTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'words';
+  String get $tableName => _alias ?? 'word_records';
   @override
-  final String actualTableName = 'words';
+  final String actualTableName = 'word_records';
   @override
-  VerificationContext validateIntegrity(Insertable<Word> instance,
+  VerificationContext validateIntegrity(Insertable<WordRecord> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -291,23 +292,25 @@ class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   @override
   Set<GeneratedColumn> get $primaryKey => {strQuestion};
   @override
-  Word map(Map<String, dynamic> data, {String tablePrefix}) {
+  WordRecord map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Word.fromData(data, _db, prefix: effectivePrefix);
+    return WordRecord.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  $WordsTable createAlias(String alias) {
-    return $WordsTable(_db, alias);
+  $WordRecordsTable createAlias(String alias) {
+    return $WordRecordsTable(_db, alias);
   }
 }
 
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $WordsTable _words;
-  $WordsTable get words => _words ??= $WordsTable(this);
+  $WordRecordsTable _wordRecords;
+  $WordRecordsTable get wordRecords => _wordRecords ??= $WordRecordsTable(this);
+  WordsDao _wordsDao;
+  WordsDao get wordsDao => _wordsDao ??= WordsDao(this as MyDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [words];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [wordRecords];
 }

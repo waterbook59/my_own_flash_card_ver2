@@ -20,7 +20,7 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   //enum TestStatusを受けての状態を格納する変数（前の画面から値を受けなければStatefulWidget直下出なくて良い）
   TestStatus _testStatus;
-  List<Word> _testDataList =List();
+  List<WordRecord> _testDataList =List();
   int _remainedQuestion =0;
   String _questionWord="もんだい";
   String _answerWord ="こたえ";
@@ -36,10 +36,11 @@ class _TestScreenState extends State<TestScreen> {
   bool _isMemorized =false;
 
   //List内を１つずつ表示するために 今選んでいるデータの１行分とList番号を変数に設定
-  Word _selectedWord;
+  WordRecord _selectedWord;
   int _index=0;
 
-
+  //dao追加
+  final dao = database.wordsDao;
 
 
   @override
@@ -51,9 +52,9 @@ class _TestScreenState extends State<TestScreen> {
   getWords() async{
     if(widget.testType == Memorized.includedWords){
       //awaitはdatabase.allWordsの前(_allWordListの前ではない)
-      _testDataList = await database.allWords;
+      _testDataList = await dao.allWords;
     }else{
-      _testDataList = await database.memorizedExcludeWords;
+      _testDataList = await dao.memorizedExcludeWords;
     }
 
     _remainedQuestion =_testDataList.length;
@@ -257,12 +258,12 @@ class _TestScreenState extends State<TestScreen> {
    }
 
   Future<void> _checkedUpdateFlag() async{
-    var updateWord = Word(
+    var updateWordRecord = WordRecord(
       strQuestion: _selectedWord.strQuestion,
       strAnswer: _selectedWord.strAnswer,
       strTime: _selectedWord.strTime,
       isMemorized: _isMemorized);
-     await database.updateWord(updateWord);
+     await dao.updateWord(updateWordRecord);
 //     print(updateWord.toString());
   }
 

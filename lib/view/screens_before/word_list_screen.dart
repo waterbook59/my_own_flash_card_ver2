@@ -11,7 +11,9 @@ class WordListScreen extends StatefulWidget {
 }
 
 class _WordListScreenState extends State<WordListScreen> {
-  List<Word> _wordList = List();
+  List<WordRecord> _wordList = List();
+  //dao追加
+  final dao = database.wordsDao;
 
   //wordListScreen開くときにdbからデータを全て取ってくる
   @override
@@ -23,7 +25,7 @@ class _WordListScreenState extends State<WordListScreen> {
   void _getAllWords() async {
     //ゲッターにアクセスは、インスタンス.getの後ろのfield名
     //戻り値がList型なので、返ってきたListを格納する変数を設定
-    _wordList = await database.allWords;
+    _wordList = await dao.allWords;
     //async/await内でsetStateが必要。initState内でやっても分離されたものが反映されない
     setState(() {});
   }
@@ -108,17 +110,17 @@ class _WordListScreenState extends State<WordListScreen> {
     }
   }
 
-  _deleteWord( Word selectedWord) async {
+  _deleteWord( WordRecord selectedWordRecord) async {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (_) => AlertDialog(
-              title: Text("${selectedWord.strQuestion}の削除"),
+              title: Text("${selectedWordRecord.strQuestion}の削除"),
               content: Text("削除してもいいですか？"),
               actions: <Widget>[
                 FlatButton(
                   onPressed: () async {
-                    await database.deleteWord(selectedWord);
+                    await dao.deleteWord(selectedWordRecord);
                     Toast.show("削除完了しました", context);
                     _getAllWords();
                     Navigator.pop(context);
@@ -135,21 +137,21 @@ class _WordListScreenState extends State<WordListScreen> {
             ));
   }
 
-  _updateWord( Word updateWord) {
+  _updateWord( WordRecord updateWordRecord) {
     //分岐した後の表示は遷移先で実装
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => EditScreen(
                 status: EditStatus.edit,
-                word: updateWord,
+                word: updateWordRecord,
               )),
     );
   }
 
   _checkSort() async {
     //データベースからのデータが格納される_wordListを更新してbuildすれば表示がその順でitemBuilderで生成される
-    _wordList = await database.allWordsSorted;
+    _wordList = await dao.allWordsSorted;
     setState(() {});
   }
 
@@ -162,7 +164,7 @@ class _WordListScreenState extends State<WordListScreen> {
   }
 
   dateSort() async {
-    _wordList = await database.timeSorted;
+    _wordList = await dao.timeSorted;
     setState(() {});
   }
 }
