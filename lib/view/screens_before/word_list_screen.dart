@@ -26,6 +26,7 @@ class _WordListScreenState extends State<WordListScreen> {
     //ゲッターにアクセスは、インスタンス.getの後ろのfield名
     //戻り値がList型なので、返ってきたListを格納する変数を設定
     _wordList = await dao.allWords;
+    print("_wordList一覧isMemorizedあるか：$_wordList");
     //async/await内でsetStateが必要。initState内でやっても分離されたものが反映されない
     setState(() {});
   }

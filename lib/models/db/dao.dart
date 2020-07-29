@@ -17,7 +17,7 @@ class WordsDao extends DatabaseAccessor<MyDatabase> with _$WordsDaoMixin{
    行単位の引数の時は、戻り値はvoidで良さそう
    insertメソッドの戻り値は行番号を返すのでFuture<int>になっている
    */
-  Future addWord(WordRecord word) =>into(wordRecords).insert(word);
+  Future addWord(WordRecord wordRecord) =>into(wordRecords).insert(wordRecord);
 
   //Read(抽出)  参考：loads all todo entries
   // 1.全データ取ってくる Databaseクラス内のプロパティに設定して取ってくる

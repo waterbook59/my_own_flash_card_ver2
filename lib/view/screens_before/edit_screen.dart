@@ -158,7 +158,7 @@ class _EditScreenState extends State<EditScreen> {
   if(widget.status == EditStatus.add) {
     _insertWord();
     //外に出したWidgetから入力したテキストを取ってくる
-    print(testText.text);
+    print("入力した問題「${_questionController.text}」");
     return;
   }
   if(widget.status == EditStatus.edit){

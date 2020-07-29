@@ -20,10 +20,12 @@ class WordsRepository  {
   final dao = database.wordsDao;
 
   Future<List<Word>> getWordList() async{
-    //TODO DBから得られたWordRecordsの結果をモデルクラスのWordsへ変換する
+    // DBから得られたWordRecordsの結果をモデルクラスのWordsへ変換する
 //    result = await database.allWords;
     resultWordRecords = await dao.allWords;
+    print("DB空のWordRecordのリスト：$resultWordRecords");
     result =resultWordRecords.toWords(resultWordRecords);
+    print("DBのWordRecordのリストをWordへ変換(中見れない..)：$result");
   return result;
   }
 
@@ -50,12 +52,13 @@ class WordsRepository  {
   }
 
 
-  Future<Event> addWord(word) async{
+  Future<Event> addWord(Word word) async{
     //入ってきたwordをwordRecordへ変換してdatabaseへ登録
     //returnするイベントを定義してイベントの状態をviewmodelに返す＆Future<void>からFuture<Event>変更
   try{
 //    await database.addWord(word);
   //入ってきたwordをwordRecordへ変換してDBへ登録
+    // エラー：Class 'Word' has no instance method 'toWordRecord'=>addWordの引数にWordクラスを明示したらOK!!
     _wordRecord = word.toWordRecord(word);
     await dao.addWord(_wordRecord);
     dbEvent =Event.add;
@@ -93,10 +96,11 @@ class WordsRepository  {
     return dbEvent;
   }
 
+  // 暗記済チェックを入れたWordを新たに更新登録
   Future<void> checkedUpdateFlag(Word updateWord) async{
 //    await database.updateWord(updateWord);
     _wordRecord = updateWord.toWordRecord(updateWord);
-    await dao.deleteWord(_wordRecord);
+    await dao.updateWord(_wordRecord);
   }
 
 //  wordDeleted() {}

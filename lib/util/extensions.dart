@@ -9,9 +9,8 @@ import 'package:myownflashcardver2/models/model/words_model.dart';
 extension ConvertToWordRecord on Word{
 
   WordRecord toWordRecord(Word word){
-    var wordRecord = WordRecord();
-
-          WordRecord(
+    // var wordRecord = WordRecord();のインスタンスは作らず直接代入
+    var wordRecord = WordRecord(
             strQuestion:word.strQuestion ?? "",
             strAnswer:word.strAnswer ?? "",
             strTime: word.strTime ??"",

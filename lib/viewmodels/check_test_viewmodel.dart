@@ -8,7 +8,7 @@ import 'package:myownflashcardver2/models/repository/words_repository.dart';
 class CheckTestViewModel extends ChangeNotifier  {
 
   final WordsRepository _repository = WordsRepository();
-   List<Word> _words=List();
+   List<Word> _words=List<Word>();
    int _remainedQuestion =0;
    TestStatus _testStatus = TestStatus.before_start;
    bool _isQuestionPart =false;
@@ -36,7 +36,7 @@ class CheckTestViewModel extends ChangeNotifier  {
       _words = await _repository.getWordList();
       _remainedQuestion=_words.length;
       _words.shuffle();
-      print("shuffle後の全データ：$_words");
+      print("shuffle後のデータの１番目：${_words[0].strQuestion}");
       //ここにisQuestionPart,isAnswerPart,isMemorizedCheck,isFabVisible,isEndMessageVisibleの初期条件をないと前のテストが残る
       _isQuestionPart =false;
       _isAnswerPart = false;
@@ -66,6 +66,7 @@ class CheckTestViewModel extends ChangeNotifier  {
  }
 
   Future<void> changeTestStatus(TestStatus testState) async{
+    //TODO 登録数がゼロの時にボタン押すとエラー！！
    switch(testState){
      case TestStatus.before_start:
        print("before_startで押すと$_testStatus/残り問題数:$_remainedQuestion");
@@ -92,11 +93,12 @@ class CheckTestViewModel extends ChangeNotifier  {
      case TestStatus.show_answer:
        //DBへの暗記済フラグの更新処理（１行分丸ごと更新）
        //更新後の状態で1行分インスタンス化=>更新クエリの変数に設定
-       var updateWord = Word(
+       Word updateWord = Word(
            strQuestion: _words[_index].strQuestion,
            strAnswer: _words[_index].strAnswer,
            strTime: _words[_index].strTime,
            isMemorized: _isMemorized);
+       print("updateWordのstrQuestion：${updateWord.strQuestion}");
        await _repository.checkedUpdateFlag(updateWord);//この後notifyListener?
        if(_remainedQuestion<=0){
          print("show_answer問題0以下で押すと$_testStatus/残り問題数:$_remainedQuestion");

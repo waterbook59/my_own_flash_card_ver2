@@ -58,7 +58,8 @@ class AddEditScreen extends StatelessWidget {
     final viewModel = Provider.of<EditWordViewModel>(context,listen: false);
 //    print(viewModel.questionController.text);
 //    print(viewModel.answerController.text);
-    viewModel.onRegisteredWord(status);
+    //awaitの追加！！！
+    await viewModel.onRegisteredWord(status);
       }
     }
 

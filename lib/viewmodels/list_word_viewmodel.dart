@@ -18,7 +18,7 @@ class ListWordViewModel extends ChangeNotifier {
 //      _repository =repository;
 
   //TODO 直接database参照しないように別のList<WordRecord>とかが必要？
-  List<Word> _words=List();
+  List<Word> _words=List<Word>();
   StreamController<Event> _deleteAction = StreamController<Event>.broadcast();
   Event _eventStatus;
 
@@ -29,7 +29,7 @@ class ListWordViewModel extends ChangeNotifier {
 
   Future<void> getWordList() async{
     _words =await _repository.getWordList();
-    print("DB=>レポジトリ=>vieModelで取得したデータ：$_words");
+    print("DB=>レポジトリ=>vieModelで取得したデータの１番目：${_words[0].strQuestion}");
     notifyListeners();
   }
 

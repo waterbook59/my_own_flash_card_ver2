@@ -114,7 +114,7 @@ class CheckTestScreen extends StatelessWidget {
   Future<void> changTestState(BuildContext context,TestStatus testState) async{
     print("ここに条件:$context");
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
-    viewModel.changeTestStatus(testState);
+    await viewModel.changeTestStatus(testState);
 
   }
 
