@@ -16,9 +16,10 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context)=>ListWordViewModel(),
-        ),
+        //findAncestorStateOfTypeエラーをなくすため直下に設置
+//        ChangeNotifierProvider(
+//          create: (context)=>ListWordViewModel(),
+//        ),
         ChangeNotifierProvider(
           create: (context)=>CheckTestViewModel(),
         ),

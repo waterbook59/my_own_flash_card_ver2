@@ -25,6 +25,7 @@ class AddEditScreen extends StatelessWidget {
               create: (context)=>EditWordViewModel(),),
           ],
           //ChangeNotifierProviderを上に置きつつ、開いたときにgetTitleTextするためにBuilder設定
+          //model.getTitleTextよりも上にChangeNotifierProvider置かないと使えないよ
           child:Builder(builder: (context){
             //画面遷移したときinitState的にstatusの違いでText(新しい単語の追加 or 登録した単語の修正)というインスタンスをモデルの方で作っておく
             final model = Provider.of<EditWordViewModel>(context,listen: false);
@@ -75,7 +76,7 @@ class AddEditScreen extends StatelessWidget {
     }
     */
 
-
+//単語一覧画面へ戻る関数がAddEditScreenクラスの外
   Future<bool> _backToListScreen(BuildContext context) {
     Navigator.pushReplacement(
         context,

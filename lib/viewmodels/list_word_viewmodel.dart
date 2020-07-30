@@ -18,7 +18,7 @@ class ListWordViewModel extends ChangeNotifier {
 //  ListWordViewModel({repository}):
 //      _repository =repository;
 
-  //TODO 直接database参照しないように別のList<WordRecord>とかが必要？
+ //  直接database参照しないようにモデルクラスをDBに設定、Wordへ変換
   List<Word> _words=List<Word>();
   StreamController<Event> _deleteAction = StreamController<Event>.broadcast();
   Event _eventStatus;
@@ -54,9 +54,10 @@ class ListWordViewModel extends ChangeNotifier {
 
   //削除だけではダメでそこからまたwordのリストを取ってくる必要あり
   //TODO 連続削除時にエラーUnhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null
+
   Future<void> onDeletedWord( Word selectedWord) async{
     _eventStatus = await _repository.deleteWord(selectedWord);
-//    notifyListeners();//いらない？？？
+//    notifyListeners();//いらない？？editWordViewModelの方ではsink.addだけで通知
     _deleteAction.sink.add(_eventStatus);
   }
 

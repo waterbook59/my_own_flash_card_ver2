@@ -11,47 +11,100 @@ import 'add_edit_screen.dart';
 
 class ListWordScreen extends StatelessWidget {
 
+  //viewModelを直下に置いたらだめ？？=>contextがないでやんす
+//  final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+
   @override
   Widget build(BuildContext context) {
 
     //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
-    //TODO リストがゼロの時エラー発生
-    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-      Future((){
-        viewModel.getWordList();
-      });
-
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("単語一覧(リファクタリングver)"),
-            actions: <Widget>[
-              Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.sort),
-                    tooltip: "暗記済が下になるよう並び替え",
-                    onPressed: () =>  checkSort(context),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.timer),
-                    tooltip: "登録日時で並び替え",
-                    onPressed: () =>  dateSort(context),
-                  ),
+    // リストがゼロの時エラー発生=>isEmptyで回避
+//    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+//      Future(()=> viewModel.getWordList());
+    return
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context)=>ListWordViewModel(),),
+        ],
+        //ChangeNotifierProviderを上に置きつつ、開いたときにgetTitleTextするためにBuilder設定
+        //model.getTitleTextよりも上にChangeNotifierProvider置かないと使えないよ
+        child:Builder(builder: (context){
+          //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
+          // リストがゼロの時エラー発生=>isEmptyで回避
+          final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+          Future(()=> viewModel.getWordList());
+          return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("単語一覧(リファクタリングver)"),
+                actions: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.sort),
+                        tooltip: "暗記済が下になるよう並び替え",
+                        onPressed: () =>  checkSort(context),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.timer),
+                        tooltip: "登録日時で並び替え",
+                        onPressed: () =>  dateSort(context),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-          body:ListWordScreenBody(),
+              ),
+              //todo viewModel渡してみたが、同様にエラー
+//          body:ListWordScreenBody(viewModel: viewModel,),
+              body:ListWordScreenBody(),
 
-           floatingActionButton: FloatingActionButton(
-            //何か表示したい時は,childにwidgetでIcon widget入れる
-            child: Icon(Icons.add),
-            tooltip: "新しい単語を登録する",
-            onPressed: () => _startEditScreen(context),
-          ),
-        ),
-      );
+              floatingActionButton: FloatingActionButton(
+                //何か表示したい時は,childにwidgetでIcon widget入れる
+                child: Icon(Icons.add),
+                tooltip: "新しい単語を登録する",
+                onPressed: () => _startEditScreen(context),
+              ),
+            ),
+          );
+        },
+        )
+    );
+
+
+//      return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
+//        child: Scaffold(
+//          appBar: AppBar(
+//            title: Text("単語一覧(リファクタリングver)"),
+//            actions: <Widget>[
+//              Row(
+//                children: <Widget>[
+//                  IconButton(
+//                    icon: Icon(Icons.sort),
+//                    tooltip: "暗記済が下になるよう並び替え",
+//                    onPressed: () =>  checkSort(context),
+//                  ),
+//                  IconButton(
+//                    icon: Icon(Icons.timer),
+//                    tooltip: "登録日時で並び替え",
+//                    onPressed: () =>  dateSort(context),
+//                  ),
+//                ],
+//              )
+//            ],
+//          ),
+//          //todo viewModel渡してみたが、同様にエラー
+////          body:ListWordScreenBody(viewModel: viewModel,),
+//          body:ListWordScreenBody(),
+//
+//           floatingActionButton: FloatingActionButton(
+//            //何か表示したい時は,childにwidgetでIcon widget入れる
+//            child: Icon(Icons.add),
+//            tooltip: "新しい単語を登録する",
+//            onPressed: () => _startEditScreen(context),
+//          ),
+//        ),
+//      );
 
   }
 
@@ -80,6 +133,9 @@ class ListWordScreen extends StatelessWidget {
 }
 
 class ListWordScreenBody extends StatefulWidget {
+  //ListWordScreenから共通のviewModelを使う検討はしたが、これもエラー
+//  final viewModel;
+//  ListWordScreenBody({this.viewModel});
   @override
   _ListWordScreenBodyState createState() => _ListWordScreenBodyState();
 }
@@ -88,6 +144,8 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
   @override
   void initState() {
     super.initState();
+    print("ListWordScreenBodyのState:$context");
+    //ここでviewModel作らなくてよくない？=>stream使えないでしょ
     final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
     viewModel.deleteAction.stream.listen((event) {
     Toast.show("削除完了しました", context);
@@ -115,12 +173,16 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
     );
   }
 
-  //TODO 削除時findAncestorStateOfTypeエラーが発生=>viewModel.onDeletedWordの段階ではnotifyListenerしない
-  //TODO 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0
+  //TODO 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
+  //ChangeNotifierProviderで削除ごとに余分に作られたwidgetにちゃんとStateのBuildContextが入ってこずエラー
+  //add_edit_screenで同様に出たエラーの時は、main.dartにあったChangeNotifierProviderをAddEditScreenのbuild下に設定
+  // =>viewModel.onDeletedWordの段階ではnotifyListenerしない＆
+  // 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0=>isEmptyで回避
   Future<void> _onWordDeleted(word, BuildContext context) async {
+
+    //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-//    await viewModel.onDeletedWord(word);
-//    await viewModel.getWordList();
+
 
     showDialog(
         context: context,
@@ -132,7 +194,7 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
             FlatButton(
               onPressed: () async {
                 await viewModel.onDeletedWord(word);
-                //todo ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーがでてるはず
+                // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
                 await viewModel.getWordList();
                 Navigator.pop(context);
               },
