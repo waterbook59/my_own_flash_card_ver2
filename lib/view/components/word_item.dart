@@ -43,10 +43,10 @@ class WordItem extends StatelessWidget {
 }
 
 //widget分割しないver
-Widget _memorizedCheckIcon(isMemorizedCheckIcon) {
-  if (isMemorizedCheckIcon) {
-    return Icon(Icons.check_circle);
-  } else {
-    return null;
-  }
-}
+//Widget _memorizedCheckIcon(isMemorizedCheckIcon) {
+//  if (isMemorizedCheckIcon) {
+//    return Icon(Icons.check_circle);
+//  } else {
+//    return null;
+//  }
+//}

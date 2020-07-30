@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
-import 'package:myownflashcardver2/view/screens_before/home_screen.dart';
-import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens/screen_home.dart';
-import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
-import 'package:myownflashcardver2/viewmodels/login_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
 import 'package:provider/provider.dart';
 

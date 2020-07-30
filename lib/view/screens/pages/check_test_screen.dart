@@ -17,7 +17,7 @@ class CheckTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //TODO 受け取ったtestTypeによって取得するデータをviewModel内の条件で変える
+    //TODO 受け取ったtestTypeによって取得するデータをviewModel内の条件で変える、問題数ゼロで入った時エラー
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
     Future(()=>viewModel.getWordList(testType));
     //listen:trueにするとデータ取得し続けてしまう
@@ -94,7 +94,7 @@ class CheckTestScreen extends StatelessWidget {
               builder: (context,model,child){
                 return model.isEndMessageVisible
                     ? Center(child: Text("テスト終了",style: TextStyle(fontSize: 50.0),))
-                    : const Text("");;
+                    : const Text("");
               },
             ),
           ],

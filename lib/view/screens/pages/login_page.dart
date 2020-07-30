@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
-import 'package:myownflashcardver2/view/screens/screen_home.dart';
 import 'package:myownflashcardver2/viewmodels/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-import 'list_word_screen.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -81,9 +79,8 @@ class __LoginPageBodyState extends State<_LoginPageBody> {
 
 class _LoginButton extends StatelessWidget {
 
-
-  String _getButtonText(LoginViewModel vm) =>
-      vm.isLogging ? "Wait..." : "Login";
+  //押してデータ取得中は表示を変える方法
+//  String _getButtonText(LoginViewModel vm) => vm.isLogging ? "Wait..." : "Login";
 
   VoidCallback _onPressed(LoginViewModel vm,context) {
     if (vm.isLogging) {

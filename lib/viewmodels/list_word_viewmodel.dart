@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/event.dart';
-//database参照してはいけない・
+//モデルクラス参照はOKだが、viewModel層からのDBへの参照はNG!
 //import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
@@ -43,10 +43,10 @@ class ListWordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //削除だけではダメでそこからまたwordのリストを取ってくる必要あり？？
+  //削除だけではダメでそこからまたwordのリストを取ってくる必要あり
   Future<void> onDeletedWord( Word selectedWord) async{
     _eventStatus = await _repository.deleteWord(selectedWord);
-    notifyListeners();
+   // notifyListeners();//いらない？？？
     _deleteAction.sink.add(_eventStatus);
   }
 

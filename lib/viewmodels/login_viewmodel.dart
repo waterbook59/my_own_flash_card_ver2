@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/uistate.dart';
-import 'package:myownflashcardver2/view/screens/screen_home.dart';
-import 'package:rxdart/rxdart.dart';
+//rxdart使わなくてもイベント通知できた
+//import 'package:rxdart/rxdart.dart';
 
 
 

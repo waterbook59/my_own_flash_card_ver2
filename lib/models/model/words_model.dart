@@ -3,8 +3,8 @@
 class Word{
   final String strQuestion;
   final String strAnswer;
-  //たぶんStringじゃない,とりあえず型指定なしでいけそう？？
-  final strTime;
+  //Stringじゃない、型指定なしでいけるがDateTimeが正しい
+  final DateTime strTime;
   final bool isMemorized;
   Word({this.strQuestion,this.strAnswer,this.strTime,this.isMemorized});
 }

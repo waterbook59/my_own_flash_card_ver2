@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
 import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/data/uistate.dart';
-//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
@@ -121,16 +120,16 @@ class EditWordViewModel extends ChangeNotifier {
       _loginSuccessAction.sink.add(_eventStatus);
       return;
 
-      if(_eventStatus==Event.add){
-        _loginSuccessAction.sink.add(Event.add);
-        _questionController.clear();
-        _answerController.clear();
-        return;
-      }
-      if(_eventStatus==Event.adderror){
-        _loginSuccessAction.sink.add(Event.adderror);
-        return;
-      }
+//      if(_eventStatus==Event.add){
+//        _loginSuccessAction.sink.add(Event.add);
+//        _questionController.clear();
+//        _answerController.clear();
+//        return;
+//      }
+//      if(_eventStatus==Event.adderror){
+//        _loginSuccessAction.sink.add(Event.adderror);
+//        return;
+//      }
 
       //thenではなくasync/awaitに書き換え
 //      await Future.delayed(Duration(milliseconds: 750));
@@ -149,14 +148,14 @@ class EditWordViewModel extends ChangeNotifier {
       _loginSuccessAction.sink.add(_eventStatus);
       return;
 
-      if(_eventStatus==Event.update){
-        _loginSuccessAction.sink.add(Event.update);
-        return;
-      }
-      if(_eventStatus==Event.adderror){
-        _loginSuccessAction.sink.add(Event.adderror);
-        return;
-      }
+//      if(_eventStatus==Event.update){
+//        _loginSuccessAction.sink.add(Event.update);
+//        return;
+//      }
+//      if(_eventStatus==Event.adderror){
+//        _loginSuccessAction.sink.add(Event.adderror);
+//        return;
+//      }
     }
 
   }

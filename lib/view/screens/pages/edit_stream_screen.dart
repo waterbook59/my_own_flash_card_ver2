@@ -5,7 +5,6 @@ import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'list_word_screen.dart';
 
 class EditStreamScreen extends StatelessWidget {
 

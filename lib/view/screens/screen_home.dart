@@ -7,8 +7,6 @@ import 'package:myownflashcardver2/view/components/radio_buttons.dart';
 import 'package:myownflashcardver2/view/screens/pages/check_test_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
-import 'package:myownflashcardver2/view/screens/pages/login_page.dart';
-import 'package:myownflashcardver2/view/screens_before/test_screen.dart';
 import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:provider/provider.dart';

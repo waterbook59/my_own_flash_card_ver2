@@ -120,6 +120,9 @@ class _AddEditBodyState extends State<AddEditBody> {
               context,
               MaterialPageRoute(builder: (context)=>ListWordScreen()));
           break;
+          //deleteは入ってこないけど下のdescriptionに出るので追加
+        case Event.delete:
+          break;
         }
       });
     }

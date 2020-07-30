@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moor_ffi/database.dart';
 import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/models/db/dao.dart';
-import 'package:myownflashcardver2/models/db/database.dart';
+//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/util/extensions.dart';
 
@@ -13,16 +13,18 @@ import '../../main.dart';
 class WordsRepository  {
 
   List<Word> result=List<Word>();
-  List<WordRecord> resultWordRecords=List<WordRecord>();
-  WordRecord _wordRecord = WordRecord();
+//  List<WordRecord> resultWordRecords=List<WordRecord>();
+//  WordRecord _wordRecord = WordRecord();
   Event dbEvent;
-//  final WordsDao _dao;
-  final dao = database.wordsDao;
+//  WordsDao dao;このままだとクエリがnullで返ってくる(DIでdaoがインスタンスの値として渡された場合はここに格納)
+  final WordsDao dao = database.wordsDao;
 
   Future<List<Word>> getWordList() async{
     // DBから得られたWordRecordsの結果をモデルクラスのWordsへ変換する
 //    result = await database.allWords;
-    resultWordRecords = await dao.allWords;
+
+  //このresultWordRecordsをfinalにすることで直接database.dartの参照やWordRecordのインスタンスがいらない
+  final resultWordRecords = await dao.allWords;
     print("DB空のWordRecordのリスト：$resultWordRecords");
     result =resultWordRecords.toWords(resultWordRecords);
     print("DBのWordRecordのリストをWordへ変換(中見れない..)：$result");
@@ -31,7 +33,7 @@ class WordsRepository  {
 
   Future<List<Word>> getMemorizedExcludeWordList() async{
 //    result = await database.memorizedExcludeWords;
-    resultWordRecords = await dao.memorizedExcludeWords;
+    final resultWordRecords = await dao.memorizedExcludeWords;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
@@ -39,14 +41,14 @@ class WordsRepository  {
 
   Future<List<Word>> allWordsSorted() async{
 //    result = await database.allWordsSorted;
-    resultWordRecords = await dao.allWordsSorted;
+    final resultWordRecords = await dao.allWordsSorted;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
 
   Future<List<Word>> timeSorted() async{
 //    result = await database.timeSorted;
-    resultWordRecords = await dao.timeSorted;
+    final resultWordRecords = await dao.timeSorted;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
@@ -59,8 +61,8 @@ class WordsRepository  {
 //    await database.addWord(word);
   //入ってきたwordをwordRecordへ変換してDBへ登録
     // エラー：Class 'Word' has no instance method 'toWordRecord'=>addWordの引数にWordクラスを明示したらOK!!
-    _wordRecord = word.toWordRecord(word);
-    await dao.addWord(_wordRecord);
+    final wordRecord = word.toWordRecord(word);
+    await dao.addWord(wordRecord);
     dbEvent =Event.add;
     return dbEvent;
   }on SqliteException catch (e) {
@@ -76,8 +78,8 @@ class WordsRepository  {
     try{
 //      await database.updateWord(word);
       //入ってきたwordをwordRecordへ変換してDBへ登録
-      _wordRecord = word.toWordRecord(word);
-      await dao.updateWord(_wordRecord);
+      final wordRecord = word.toWordRecord(word);
+      await dao.updateWord(wordRecord);
       dbEvent =Event.update;
       return dbEvent;
     }on SqliteException catch(error){
@@ -90,8 +92,8 @@ class WordsRepository  {
   Future<Event> deleteWord(Word selectedWord) async{
 //    await database.deleteWord(selectedWord);
     //入ってきたwordをwordRecordへ変換してDBから削除
-    _wordRecord = selectedWord.toWordRecord(selectedWord);
-    await dao.deleteWord(_wordRecord);
+    final wordRecord = selectedWord.toWordRecord(selectedWord);
+    await dao.deleteWord(wordRecord);
     dbEvent = Event.delete;
     return dbEvent;
   }
@@ -99,8 +101,8 @@ class WordsRepository  {
   // 暗記済チェックを入れたWordを新たに更新登録
   Future<void> checkedUpdateFlag(Word updateWord) async{
 //    await database.updateWord(updateWord);
-    _wordRecord = updateWord.toWordRecord(updateWord);
-    await dao.updateWord(_wordRecord);
+    final wordRecord = updateWord.toWordRecord(updateWord);
+    await dao.updateWord(wordRecord);
   }
 
 //  wordDeleted() {}

@@ -1,7 +1,6 @@
 //homeScreenでConsumer使うならStatelessでhomeScreen書いてみる
 
 import 'package:flutter/material.dart';
-import 'package:myownflashcardver2/view/components/radio_buttons.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 
 class HomeScreenViewModel extends ChangeNotifier {

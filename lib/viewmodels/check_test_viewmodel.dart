@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/data/test_status.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
-//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class CheckTestViewModel extends ChangeNotifier  {
@@ -67,6 +66,9 @@ class CheckTestViewModel extends ChangeNotifier  {
 
   Future<void> changeTestStatus(TestStatus testState) async{
     //TODO 登録数がゼロの時にボタン押すとエラー！！
+    if(_remainedQuestion<=0){
+      return;
+    }
    switch(testState){
      case TestStatus.before_start:
        print("before_startで押すと$_testStatus/残り問題数:$_remainedQuestion");

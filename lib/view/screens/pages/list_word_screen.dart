@@ -2,10 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
-import 'package:myownflashcardver2/view/components/memorized_checked_icon.dart';
 import 'package:myownflashcardver2/view/components/word_item.dart';
-import 'package:myownflashcardver2/view/screens/pages/edit_stream_screen.dart';
-import 'package:myownflashcardver2/view/screens/pages/login_page.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
@@ -18,6 +15,7 @@ class ListWordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
+    //TODO リストがゼロの時エラー発生
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
       Future(()=>viewModel.getWordList());
 
@@ -115,6 +113,8 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
     );
   }
 
+  //TODO 削除時findAncestorStateOfTypeエラーが発生=>viewModel.onDeletedWordの段階ではnotifyListenerしない
+  //TODO 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0
   Future<void> _onWordDeleted(word, BuildContext context) async {
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
 //    await viewModel.onDeletedWord(word);
@@ -130,6 +130,7 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
             FlatButton(
               onPressed: () async {
                 await viewModel.onDeletedWord(word);
+                //todo ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーがでてるはず
                 await viewModel.getWordList();
                 Navigator.pop(context);
               },
