@@ -17,7 +17,9 @@ class ListWordScreen extends StatelessWidget {
     //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
     //TODO リストがゼロの時エラー発生
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-      Future(()=>viewModel.getWordList());
+      Future((){
+        viewModel.getWordList();
+      });
 
       return SafeArea(
         child: Scaffold(

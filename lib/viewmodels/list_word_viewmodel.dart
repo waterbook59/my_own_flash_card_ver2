@@ -7,6 +7,7 @@ import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
+
 class ListWordViewModel extends ChangeNotifier {
 
 
@@ -29,8 +30,16 @@ class ListWordViewModel extends ChangeNotifier {
 
   Future<void> getWordList() async{
     _words =await _repository.getWordList();
-    print("DB=>レポジトリ=>vieModelで取得したデータの１番目：${_words[0].strQuestion}");
-    notifyListeners();
+    // ここでレポジトリから返ってきたListの中身が空の場合エラーがでるので、isEmptyの条件追加！！！
+    if(_words.isEmpty) {
+      print("リストが空ですよー！！他のwidgetか何か返さないとダメですよー！");
+      notifyListeners();
+      //sink.addでeventを流してemptyViewにする or notifyListeners();のみでうまいことemptyView出す
+    }else{
+      print("DB=>レポジトリ=>vieModelで取得したデータの１番目：${_words[0].strQuestion}");
+      notifyListeners();
+    }
+
   }
 
   Future<void> allWordsSorted() async{
@@ -44,9 +53,10 @@ class ListWordViewModel extends ChangeNotifier {
   }
 
   //削除だけではダメでそこからまたwordのリストを取ってくる必要あり
+  //TODO 連続削除時にエラーUnhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null
   Future<void> onDeletedWord( Word selectedWord) async{
     _eventStatus = await _repository.deleteWord(selectedWord);
-   // notifyListeners();//いらない？？？
+//    notifyListeners();//いらない？？？
     _deleteAction.sink.add(_eventStatus);
   }
 

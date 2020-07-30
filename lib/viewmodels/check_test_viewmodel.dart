@@ -33,6 +33,11 @@ class CheckTestViewModel extends ChangeNotifier  {
   switch (testType){
     case Memorized.includedWords:
       _words = await _repository.getWordList();
+      if(_words.isEmpty) {
+        print("リストが空ですよー！！他のwidgetか何か返さないとダメですよー！");
+        return;//notifyListener??
+        //sink.addでeventを流してemptyViewにする or notifyListeners();のみでうまいことemptyView出す
+      }
       _remainedQuestion=_words.length;
       _words.shuffle();
       print("shuffle後のデータの１番目：${_words[0].strQuestion}");
@@ -49,6 +54,7 @@ class CheckTestViewModel extends ChangeNotifier  {
       break;
     case Memorized.excludedWords:
       _words = await _repository.getMemorizedExcludeWordList();
+      //なぜかこっちは_words.isEmptyの条件つけなくてもエラー出ない
       print("覚えたモノ以外のデータ：$_words");
       _remainedQuestion=_words.length;
       _words.shuffle();
