@@ -12,19 +12,27 @@ import '../../main.dart';
 
 class WordsRepository  {
 
+  //DIあり
+  // DIなしだとクエリがnullで返ってくる(DIでdaoがインスタンスの値として渡された場合はここに格納)
+    WordsDao _dao;
+    //DIなし
+//  final WordsDao _dao = database.wordsDao;
+
+  WordsRepository({dao}):_dao =dao;
+
+
   List<Word> result=List<Word>();
 //  List<WordRecord> resultWordRecords=List<WordRecord>();
 //  WordRecord _wordRecord = WordRecord();
   Event dbEvent;
-//  WordsDao dao;このままだとクエリがnullで返ってくる(DIでdaoがインスタンスの値として渡された場合はここに格納)
-  final WordsDao dao = database.wordsDao;
+
 
   Future<List<Word>> getWordList() async{
     // DBから得られたWordRecordsの結果をモデルクラスのWordsへ変換する
 //    result = await database.allWords;
 
   //このresultWordRecordsをfinalにすることで直接database.dartの参照やWordRecordのインスタンスがいらない
-  final resultWordRecords = await dao.allWords;
+  final resultWordRecords = await _dao.allWords;
     print("DB空のWordRecordのリスト：$resultWordRecords");
     result =resultWordRecords.toWords(resultWordRecords);
     print("DBのWordRecordのリストをWordへ変換(中見れない..)：$result");
@@ -33,7 +41,7 @@ class WordsRepository  {
 
   Future<List<Word>> getMemorizedExcludeWordList() async{
 //    result = await database.memorizedExcludeWords;
-    final resultWordRecords = await dao.memorizedExcludeWords;
+    final resultWordRecords = await _dao.memorizedExcludeWords;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
@@ -41,14 +49,14 @@ class WordsRepository  {
 
   Future<List<Word>> allWordsSorted() async{
 //    result = await database.allWordsSorted;
-    final resultWordRecords = await dao.allWordsSorted;
+    final resultWordRecords = await _dao.allWordsSorted;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
 
   Future<List<Word>> timeSorted() async{
 //    result = await database.timeSorted;
-    final resultWordRecords = await dao.timeSorted;
+    final resultWordRecords = await _dao.timeSorted;
     result =resultWordRecords.toWords(resultWordRecords);
     return result;
   }
@@ -62,7 +70,7 @@ class WordsRepository  {
   //入ってきたwordをwordRecordへ変換してDBへ登録
     // エラー：Class 'Word' has no instance method 'toWordRecord'=>addWordの引数にWordクラスを明示したらOK!!
     final wordRecord = word.toWordRecord(word);
-    await dao.addWord(wordRecord);
+    await _dao.addWord(wordRecord);
     dbEvent =Event.add;
     return dbEvent;
   }on SqliteException catch (e) {
@@ -79,7 +87,7 @@ class WordsRepository  {
 //      await database.updateWord(word);
       //入ってきたwordをwordRecordへ変換してDBへ登録
       final wordRecord = word.toWordRecord(word);
-      await dao.updateWord(wordRecord);
+      await _dao.updateWord(wordRecord);
       dbEvent =Event.update;
       return dbEvent;
     }on SqliteException catch(error){
@@ -93,7 +101,7 @@ class WordsRepository  {
 //    await database.deleteWord(selectedWord);
     //入ってきたwordをwordRecordへ変換してDBから削除
     final wordRecord = selectedWord.toWordRecord(selectedWord);
-    await dao.deleteWord(wordRecord);
+    await _dao.deleteWord(wordRecord);
     dbEvent = Event.delete;
     return dbEvent;
   }
@@ -102,7 +110,7 @@ class WordsRepository  {
   Future<void> checkedUpdateFlag(Word updateWord) async{
 //    await database.updateWord(updateWord);
     final wordRecord = updateWord.toWordRecord(updateWord);
-    await dao.updateWord(wordRecord);
+    await _dao.updateWord(wordRecord);
   }
 
 //  wordDeleted() {}
