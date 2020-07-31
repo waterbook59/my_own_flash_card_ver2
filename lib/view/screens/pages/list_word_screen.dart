@@ -22,6 +22,7 @@ class ListWordScreen extends StatelessWidget {
 //    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
 //      Future(()=> viewModel.getWordList());
     return
+    //とりあえずChangeNotifierProviderをbuild直下にして対応
     MultiProvider(
         providers: [
           ChangeNotifierProvider(
