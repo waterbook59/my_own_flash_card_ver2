@@ -6,7 +6,11 @@ import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class CheckTestViewModel extends ChangeNotifier  {
 
-  final WordsRepository _repository = WordsRepository();
+  //DIあり
+  final WordsRepository _repository;
+  CheckTestViewModel({repository}):_repository=repository;
+  //DIなし
+//  final WordsRepository _repository = WordsRepository();
    List<Word> _words=List<Word>();
    int _remainedQuestion =0;
    TestStatus _testStatus = TestStatus.before_start;

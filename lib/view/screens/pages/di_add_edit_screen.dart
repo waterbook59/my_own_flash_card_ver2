@@ -10,50 +10,40 @@ import 'package:toast/toast.dart';
 import 'di_list_word_screen.dart';
 import 'list_word_screen.dart';
 
-class AddEditScreen extends StatelessWidget {
+class DiAddEditScreen extends StatelessWidget {
   final EditStatus status;
   final Word word;
 
-  AddEditScreen({@required this.status,this.word});
+  DiAddEditScreen({@required this.status,this.word});
 
   @override
   Widget build(BuildContext context) {
+
+    final model = Provider.of<EditWordViewModel>(context,listen: false);
+    Future(()=>model.getTitleText(status,word));
 //    String _titleText="試しのタイトル(statusで分ける)";
     return
-      MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (context)=>EditWordViewModel(),),
-          ],
-          //ChangeNotifierProviderを上に置きつつ、開いたときにgetTitleTextするためにBuilder設定
-          //model.getTitleTextよりも上にChangeNotifierProvider置かないと使えないよ
-          child:Builder(builder: (context){
-            //画面遷移したときinitState的にstatusの違いでText(新しい単語の追加 or 登録した単語の修正)というインスタンスをモデルの方で作っておく
-            final model = Provider.of<EditWordViewModel>(context,listen: false);
-            Future(()=>model.getTitleText(status,word));
-              return
-                WillPopScope(//戻るときに単にpopではなく、pushReplace
-                   onWillPop: ()=> _backToListScreen(context),
-                   child: Scaffold(
-                     appBar: AppBar(
-                       title:
-                       Consumer<EditWordViewModel>(builder: (context,model,child){
-                         return model.titleText;
-                       }),
-                       actions: <Widget>[
-                         IconButton(
-                           tooltip: "登録",
-                           icon: Icon(Icons.check),
-                           onPressed: ()=>_onWordRegistered(context,status),),
-                       ],
-                     ),
-                     body:AddEditBody(),
-      ),
-    );
-          },
-          )
-      );
-  }
+      WillPopScope(//戻るときに単にpopではなく、pushReplace
+                onWillPop: ()=> _backToListScreen(context),
+                child: Scaffold(
+                  appBar: AppBar(
+                    title:
+                    Consumer<EditWordViewModel>(builder: (context,model,child){
+                      return model.titleText;
+                    }),
+                    actions: <Widget>[
+                      IconButton(
+                        tooltip: "登録",
+                        icon: Icon(Icons.check),
+                        onPressed: ()=>_onWordRegistered(context,status),),
+                    ],
+                  ),
+                  body:DiAddEditBody(),
+                ),
+              );
+          }
+
+
 
 //   単語登録をview=>EditWordViewModel=>レポジトリ経由で外注
   Future<void>  _onWordRegistered(BuildContext context, EditStatus status) async{
@@ -62,11 +52,11 @@ class AddEditScreen extends StatelessWidget {
 //    print(viewModel.answerController.text);
     //awaitの追加！！！
     await viewModel.onRegisteredWord(status);
-      }
-    }
+  }
+}
 
-    //statusの分岐をここで行うがinsertWord,updateWordというメソッドには切り分けず、部分的に必要なところをviewModelへ外注してみる
-    /*
+//statusの分岐をここで行うがinsertWord,updateWordというメソッドには切り分けず、部分的に必要なところをviewModelへ外注してみる
+/*
     if(status == EditStatus.add) {
       await viewModel.insertWord();
       return;
@@ -78,23 +68,23 @@ class AddEditScreen extends StatelessWidget {
     */
 
 //単語一覧画面へ戻る関数がAddEditScreenクラスの外
-  Future<bool> _backToListScreen(BuildContext context) {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context)=>DiListWordScreen())
-    );
-    return Future.value(false);
-  }
+Future<bool> _backToListScreen(BuildContext context) {
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context)=>DiListWordScreen())
+  );
+  return Future.value(false);
+}
 
 
 
 //イベント通知するのにbodyだけStatefulに
-class AddEditBody extends StatefulWidget {
+class DiAddEditBody extends StatefulWidget {
   @override
-  _AddEditBodyState createState() => _AddEditBodyState();
+  _DiAddEditBodyState createState() => _DiAddEditBodyState();
 }
 
-class _AddEditBodyState extends State<AddEditBody> {
+class _DiAddEditBodyState extends State<DiAddEditBody> {
 
   @override
   void initState() {
@@ -122,12 +112,12 @@ class _AddEditBodyState extends State<AddEditBody> {
               context,
               MaterialPageRoute(builder: (context)=>DiListWordScreen()));
           break;
-          //deleteは入ってこないけど下のdescriptionに出るので追加
+      //deleteは入ってこないけど下のdescriptionに出るので追加
         case Event.delete:
           break;
-        }
-      });
-    }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

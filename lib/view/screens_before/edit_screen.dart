@@ -34,7 +34,8 @@ class _EditScreenState extends State<EditScreen> {
   //外に出したWidgetでも
   TextEditingController testText=TextEditingController();
   //dao追加
-   final dao = database.wordsDao;
+  //todo テスト用に//
+   //final dao = database.wordsDao;
 
 
   //enumの分岐表示はinitStateで実装
@@ -246,7 +247,8 @@ class _EditScreenState extends State<EditScreen> {
             try {
               //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
               //ちなみにdatabaseはmain.dartでインスタンス化済
-              await dao.addWord(wordRecord);
+              //todo テスト用にdao//
+//              await dao.addWord(wordRecord);
               //databaseへ文字登録が終わったらTextField空白にする
               _questionController.clear();
               _answerController.clear();
@@ -319,7 +321,8 @@ class _EditScreenState extends State<EditScreen> {
              try{
                //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
                //ちなみにdatabaseはmain.dartでインスタンス化済
-               await dao.updateWord(wordRecord);
+               //todo テスト用にdao//
+             //  await dao.updateWord(wordRecord);
 
                /* chapter251 AlertDialogから直接一覧画面ページへ行くには
                Navigator.popでまずダイアログを除去

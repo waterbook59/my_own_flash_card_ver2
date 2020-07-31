@@ -13,7 +13,8 @@ class WordListScreen extends StatefulWidget {
 class _WordListScreenState extends State<WordListScreen> {
   List<WordRecord> _wordList = List();
   //dao追加
-  final dao = database.wordsDao;
+  //todo テスト用にdao//
+ // final dao = database.wordsDao;
 
   //wordListScreen開くときにdbからデータを全て取ってくる
   @override
@@ -25,7 +26,8 @@ class _WordListScreenState extends State<WordListScreen> {
   void _getAllWords() async {
     //ゲッターにアクセスは、インスタンス.getの後ろのfield名
     //戻り値がList型なので、返ってきたListを格納する変数を設定
-    _wordList = await dao.allWords;
+    //todo テスト用にdao//
+   // _wordList = await dao.allWords;
     print("_wordList一覧isMemorizedあるか：$_wordList");
     //async/await内でsetStateが必要。initState内でやっても分離されたものが反映されない
     setState(() {});
@@ -121,7 +123,8 @@ class _WordListScreenState extends State<WordListScreen> {
               actions: <Widget>[
                 FlatButton(
                   onPressed: () async {
-                    await dao.deleteWord(selectedWordRecord);
+                    //todo テスト用にdao//
+                 //   await dao.deleteWord(selectedWordRecord);
                     Toast.show("削除完了しました", context);
                     _getAllWords();
                     Navigator.pop(context);
@@ -152,7 +155,8 @@ class _WordListScreenState extends State<WordListScreen> {
 
   _checkSort() async {
     //データベースからのデータが格納される_wordListを更新してbuildすれば表示がその順でitemBuilderで生成される
-    _wordList = await dao.allWordsSorted;
+    //todo テスト用にdao//
+    //_wordList = await dao.allWordsSorted;
     setState(() {});
   }
 
@@ -165,7 +169,8 @@ class _WordListScreenState extends State<WordListScreen> {
   }
 
   dateSort() async {
-    _wordList = await dao.timeSorted;
+      //todo テスト用にdao//
+   // _wordList = await dao.timeSorted;
     setState(() {});
   }
 }

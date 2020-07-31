@@ -10,13 +10,14 @@ import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class ListWordViewModel extends ChangeNotifier {
 
+  //DIあり
+  final WordsRepository _repository;
+  ListWordViewModel({repository}):
+      _repository =repository;
 
-    final WordsRepository _repository = WordsRepository();
+  //DIなし
+//    final WordsRepository _repository = WordsRepository();
 
-  //DI使うならProxyProvider使わなあかんでしょ
-//  final WordsRepository _repository;
-//  ListWordViewModel({repository}):
-//      _repository =repository;
 
  //  直接database参照しないようにモデルクラスをDBに設定、Wordへ変換
   List<Word> _words=List<Word>();

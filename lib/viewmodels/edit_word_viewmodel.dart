@@ -10,7 +10,12 @@ import 'package:myownflashcardver2/models/repository/words_repository.dart';
 
 class EditWordViewModel extends ChangeNotifier {
 
-  final WordsRepository _repository = WordsRepository();
+  //DIあり
+  final WordsRepository _repository;
+  EditWordViewModel({repository}):_repository =repository;
+
+  //DIなし
+//  final WordsRepository _repository = WordsRepository();
 
   bool _isQuestionEnabled=true;
   Text _titleText=Text("ペッペー");

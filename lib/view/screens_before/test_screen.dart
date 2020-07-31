@@ -40,7 +40,8 @@ class _TestScreenState extends State<TestScreen> {
   int _index=0;
 
   //dao追加
-  final dao = database.wordsDao;
+  //todo テスト用にdao//
+  //final dao = database.wordsDao;
 
 
   @override
@@ -52,9 +53,11 @@ class _TestScreenState extends State<TestScreen> {
   getWords() async{
     if(widget.testType == Memorized.includedWords){
       //awaitはdatabase.allWordsの前(_allWordListの前ではない)
-      _testDataList = await dao.allWords;
+      //todo テスト用にdao//
+    //  _testDataList = await dao.allWords;
     }else{
-      _testDataList = await dao.memorizedExcludeWords;
+      //todo テスト用にdao//
+     // _testDataList = await dao.memorizedExcludeWords;
     }
 
     _remainedQuestion =_testDataList.length;
@@ -263,7 +266,8 @@ class _TestScreenState extends State<TestScreen> {
       strAnswer: _selectedWord.strAnswer,
       strTime: _selectedWord.strTime,
       isMemorized: _isMemorized);
-     await dao.updateWord(updateWordRecord);
+    //todo テスト用にdao//
+   //  await dao.updateWord(updateWordRecord);
 //     print(updateWord.toString());
   }
 

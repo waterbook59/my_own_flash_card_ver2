@@ -5,6 +5,7 @@ import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
 import 'package:myownflashcardver2/view/screens/pages/check_test_screen.dart';
+import 'package:myownflashcardver2/view/screens/pages/di_list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
 import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
@@ -113,7 +114,7 @@ class ScreenHome extends StatelessWidget {
   _lookListTest(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListWordScreen()),
+      MaterialPageRoute(builder: (context) => DiListWordScreen()),
     );
   }
 
