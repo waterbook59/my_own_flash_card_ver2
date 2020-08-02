@@ -4,6 +4,7 @@ import 'package:myownflashcardver2/data/event.dart';
 //import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/view/components/word_text_input.dart';
+import 'package:myownflashcardver2/view/screens/screen_home.dart';
 import 'package:myownflashcardver2/viewmodels/di_edit_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -137,3 +138,12 @@ Future<bool> _backToListScreen(BuildContext context) {
   );
   return Future.value(false);
 }
+
+
+//Future<bool> _backToListScreen(BuildContext context) {
+//  Navigator.pushAndRemoveUntil(
+//      context,
+//      MaterialPageRoute(builder: (context)=>ScreenHome()),
+//        (_)=>false);
+//  return Future.value(false);
+//}

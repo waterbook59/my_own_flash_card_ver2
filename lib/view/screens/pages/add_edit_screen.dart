@@ -80,7 +80,7 @@ class AddEditScreen extends StatelessWidget {
   Future<bool> _backToListScreen(BuildContext context) {
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context)=>DiListWordScreen())
+        MaterialPageRoute(builder: (context)=>ListWordScreen())
     );
     return Future.value(false);
   }
@@ -108,9 +108,9 @@ class _AddEditBodyState extends State<AddEditBody> {
         case Event.add:
           Toast.show("「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
           viewModel.textClear();
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context)=>DiListWordScreen()));
+//          Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(builder: (context)=>ListWordScreen()));
           break;
         case Event.adderror:
           Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
@@ -119,7 +119,7 @@ class _AddEditBodyState extends State<AddEditBody> {
           Toast.show("「${viewModel.questionController.text}」更新しました", context);
           Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context)=>DiListWordScreen()));
+              MaterialPageRoute(builder: (context)=>ListWordScreen()));
           break;
           //deleteは入ってこないけど下のdescriptionに出るので追加
         case Event.delete:

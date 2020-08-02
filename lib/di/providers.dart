@@ -29,9 +29,9 @@ List dependentModels = [
   ProxyProvider<MyDatabase,WordsDao>(
     update: (_, db, dao)=>WordsDao(db),
 ),
-  ProxyProvider<WordsDao,WordsRepository>(
-    update: (_, dao, repository)=>WordsRepository(dao: dao),
-  ),
+//  ProxyProvider<WordsDao,WordsRepository>(
+//    update: (_, dao, repository)=>WordsRepository(dao: dao),
+//  ),
 ];
 
 //chapter98 RepositoryにChangeNotifierProxyProvider
@@ -41,11 +41,11 @@ List viewModels =[
     repository:Provider.of<WordsRepository>(context, listen: false),
     ),
   ),
-  ChangeNotifierProvider<ListWordViewModel>(
-    create: (context)=>ListWordViewModel(
-      repository:Provider.of<WordsRepository>(context, listen: false),
-    ),
-  ),
+//  ChangeNotifierProvider<ListWordViewModel>(
+//    create: (context)=>ListWordViewModel(
+//      repository:Provider.of<WordsRepository>(context, listen: false),
+//    ),
+//  ),
   ChangeNotifierProvider<DiEditWordViewModel>(
     create: (context)=>DiEditWordViewModel(
         repository:Provider.of<WordsRepository>(context, listen: false),

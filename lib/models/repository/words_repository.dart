@@ -14,11 +14,13 @@ class WordsRepository  {
 
   //DIあり
   // DIなしだとクエリがnullで返ってくる(DIでdaoがインスタンスの値として渡された場合はここに格納)
-    WordsDao _dao;
-    //DIなし
-//  final WordsDao _dao = database.wordsDao;
+//    WordsDao _dao;
+//  WordsRepository({dao}):_dao =dao;
 
-  WordsRepository({dao}):_dao =dao;
+    //DIなし
+  final WordsDao _dao = database.wordsDao;
+
+
 
 
   List<Word> result=List<Word>();
