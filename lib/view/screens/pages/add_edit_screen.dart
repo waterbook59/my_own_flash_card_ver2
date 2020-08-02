@@ -30,7 +30,40 @@ class AddEditScreen extends StatelessWidget {
           child:Builder(builder: (context){
             //画面遷移したときinitState的にstatusの違いでText(新しい単語の追加 or 登録した単語の修正)というインスタンスをモデルの方で作っておく
             final model = Provider.of<EditWordViewModel>(context,listen: false);
-            Future(()=>model.getTitleText(status,word));
+            Future((){
+              model.getTitleText(status,word);
+              model.loginSuccessAction.stream.listen((event) {
+              print("view層で受けた$event");
+              switch(event){
+                case Event.empty:
+                  Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                  break;
+                case Event.add:
+                  Toast.show("「${model.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
+                  model.textClear();
+        //          Navigator.pushReplacement(
+        //              context,
+        //              MaterialPageRoute(builder: (context)=>ListWordScreen()));
+                  break;
+                case Event.adderror:
+                  Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
+                  break;
+                case Event.update:
+                  Toast.show("「${model.questionController.text}」更新しました", context);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context)=>ListWordScreen()));
+                  break;
+                  //deleteは入ってこないけど下のdescriptionに出るので追加
+                case Event.delete:
+                  break;
+                }
+              });
+            });
+
+
+
+
               return
                 WillPopScope(//戻るときに単にpopではなく、pushReplace
                    onWillPop: ()=> _backToListScreen(context),
@@ -88,46 +121,79 @@ class AddEditScreen extends StatelessWidget {
 
 
 //イベント通知するのにbodyだけStatefulに
-class AddEditBody extends StatefulWidget {
-  @override
-  _AddEditBodyState createState() => _AddEditBodyState();
-}
-
-class _AddEditBodyState extends State<AddEditBody> {
-
-  @override
-  void initState() {
-    super.initState();
-    final viewModel = Provider.of<EditWordViewModel>(context, listen: false);
-    viewModel.loginSuccessAction.stream.listen((event) {
-      print("view層で受けた$event");
-      switch(event){
-        case Event.empty:
-          Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-          break;
-        case Event.add:
-          Toast.show("「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
-          viewModel.textClear();
+//class AddEditBody extends StatefulWidget {
+//  @override
+//  _AddEditBodyState createState() => _AddEditBodyState();
+//}
+//class _AddEditBodyState extends State<AddEditBody> {
+//
+//  @override
+//  void initState() {
+//    super.initState();
+//    final viewModel = Provider.of<EditWordViewModel>(context, listen: false);
+//    viewModel.loginSuccessAction.stream.listen((event) {
+//      print("view層で受けた$event");
+//      switch(event){
+//        case Event.empty:
+//          Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+//          break;
+//        case Event.add:
+//          Toast.show("「${viewModel.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
+//          viewModel.textClear();
+////          Navigator.pushReplacement(
+////              context,
+////              MaterialPageRoute(builder: (context)=>ListWordScreen()));
+//          break;
+//        case Event.adderror:
+//          Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
+//          break;
+//        case Event.update:
+//          Toast.show("「${viewModel.questionController.text}」更新しました", context);
 //          Navigator.pushReplacement(
 //              context,
 //              MaterialPageRoute(builder: (context)=>ListWordScreen()));
-          break;
-        case Event.adderror:
-          Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
-          break;
-        case Event.update:
-          Toast.show("「${viewModel.questionController.text}」更新しました", context);
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context)=>ListWordScreen()));
-          break;
-          //deleteは入ってこないけど下のdescriptionに出るので追加
-        case Event.delete:
-          break;
-        }
-      });
-    }
+//          break;
+//          //deleteは入ってこないけど下のdescriptionに出るので追加
+//        case Event.delete:
+//          break;
+//        }
+//      });
+//    }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return SingleChildScrollView(
+//      child: Column(
+//        children: <Widget>[
+//          const SizedBox(height: 20.0,),
+//          const Text("問題と答えを入力して「登録」ボタンを押してください"),
+//          const SizedBox(height: 40.0,),
+//          Consumer<EditWordViewModel>(
+//              builder: (context,model,child){
+//                return WordTextInput(
+//                  label: "問題",
+//                  textEditingController: model.questionController,
+//                  isQuestionEnabled: model.isQuestionEnabled,);
+//              }),
+//          const SizedBox(height: 30.0,),
+//          Consumer<EditWordViewModel>(
+//              builder: (context,model,child){
+//                return WordTextInput(
+//                    label: "答え",
+//                    textEditingController: model.answerController);
+//                // isQuestionEnabled: model.isQuestionEnabled,);
+//              }),
+//          const SizedBox(height: 30.0,),
+//
+////              WordTextInput(label: "答え",textEditingController: _answerController),
+//        ],
+//      ),
+//    );
+//  }
+//}
 
+//bodyもStatelessに
+class AddEditBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

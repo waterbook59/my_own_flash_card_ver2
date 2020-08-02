@@ -34,11 +34,13 @@ class ListWordScreen extends StatelessWidget {
           //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
           // リストがゼロの時エラー発生=>isEmptyで回避
           final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-          Future(()=> viewModel.getWordList());
-          //todo 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしたり、Providerをこのページ内に儲けたりしなくていいのでは？？
-         // viewModel.deleteAction.stream.listen((event) {
-           // Toast.show("削除完了しました", context);
-          //});
+          //todo 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしなくても良い
+          Future((){
+            viewModel.getWordList();
+            viewModel.deleteAction.stream.listen((event) {
+              Toast.show("削除完了しました", context);
+            });
+          });
 
           return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
             child: Scaffold(
@@ -138,29 +140,104 @@ class ListWordScreen extends StatelessWidget {
   }
 }
 
-class ListWordScreenBody extends StatefulWidget {
-  //ListWordScreenから共通のviewModelを使う検討はしたが、これもエラー
-//  final viewModel;
-//  ListWordScreenBody({this.viewModel});
-  @override
-  _ListWordScreenBodyState createState() => _ListWordScreenBodyState();
-}
-class _ListWordScreenBodyState extends State<ListWordScreenBody> {
+//ListWordScreenBodyをStatefulに
+//class ListWordScreenBody extends StatefulWidget {
+//  //ListWordScreenから共通のviewModelを使う検討はしたが、これもエラー
+////  final viewModel;
+////  ListWordScreenBody({this.viewModel});
+//  @override
+//  _ListWordScreenBodyState createState() => _ListWordScreenBodyState();
+//}
+//class _ListWordScreenBodyState extends State<ListWordScreenBody> {
+//
+//  @override
+//  void initState() {
+//    super.initState();
+//    print("ListWordScreenBodyのState:$context");
+//    //ここでviewModel作らなくてよくない？=>stream使えないでしょ
+//    final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
+//    viewModel.deleteAction.stream.listen((event) {
+//    Toast.show("削除完了しました", context);
+//    });
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Padding(
+//      padding: const EdgeInsets.all(15.0),
+//      child: Consumer<ListWordViewModel>(
+//          builder: (context,model,child){
+//            return ListView.builder(
+//                itemCount: model.words.length,
+//                itemBuilder: (context, int position) =>
+//                    WordItem(
+//                      word:model.words[position],
+//                      onLongTapped: (word)=>_onWordDeleted(word,context),
+//                      onWordTapped: (word)=>_upDateWord(word,context),
+////                         memorizedCheckedIcon:MemorizedCheckedIcon(isCheckedIcon: model.words[position].isMemorized),
+//                    )
+//            );
+//          }
+//      ),
+//    );
+//  }
+//
+//  //TODO 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
+//  //ChangeNotifierProviderで削除ごとに余分に作られたwidgetにちゃんとStateのBuildContextが入ってこずエラー
+//  //add_edit_screenで同様に出たエラーの時は、main.dartにあったChangeNotifierProviderをAddEditScreenのbuild下に設定
+//  // =>viewModel.onDeletedWordの段階ではnotifyListenerしない＆
+//  // 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0=>isEmptyで回避
+//  Future<void> _onWordDeleted(word, BuildContext context) async {
+//
+//    //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
+//    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+//
+//
+//    showDialog(
+//        context: context,
+//        barrierDismissible: false,
+//        builder: (_) => AlertDialog(
+//          title: Text("『${word.strQuestion}』の削除"),
+//          content:const Text("削除してもいいですか？"),
+//          actions: <Widget>[
+//            FlatButton(
+//              onPressed: () async {
+//                await viewModel.onDeletedWord(word);
+//                // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
+//                await viewModel.getWordList();
+//                Navigator.pop(context);
+//              },
+//              child: Text("はい"),
+//            ),
+//            FlatButton(
+//              onPressed: () {
+//                Navigator.pop(context);
+//              },
+//              child: Text("いいえ"),
+//            ),
+//          ],
+//        ));
+//  }
+//
+//  _upDateWord( updateWord, BuildContext context) {
+//    //分岐した後の表示は遷移先で実装
+//    Navigator.pushReplacement(
+//      context,
+//      MaterialPageRoute(
+//          builder: (context) => AddEditScreen(
+//            status: EditStatus.edit,
+//            word: updateWord,
+//          )
+//      ),
+//    );
+//  }
+//}
 
-  @override
-  void initState() {
-    super.initState();
-    print("ListWordScreenBodyのState:$context");
-    //ここでviewModel作らなくてよくない？=>stream使えないでしょ
-    final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
-    viewModel.deleteAction.stream.listen((event) {
-    Toast.show("削除完了しました", context);
-    });
-  }
-
+//ListWordScreenBodyをStatelessに
+class ListWordScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return  Padding(
       padding: const EdgeInsets.all(15.0),
       child: Consumer<ListWordViewModel>(
           builder: (context,model,child){
@@ -188,7 +265,6 @@ class _ListWordScreenBodyState extends State<ListWordScreenBody> {
 
     //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-
 
     showDialog(
         context: context,
