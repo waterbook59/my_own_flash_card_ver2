@@ -50,8 +50,7 @@ class AddEditScreen extends StatelessWidget {
                      body:AddEditBody(),
       ),
     );
-          },
-          )
+          },)
       );
   }
 

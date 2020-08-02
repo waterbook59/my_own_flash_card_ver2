@@ -8,48 +8,60 @@ import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-import 'add_edit_screen.dart';
 
 class DiListWordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
-    // リストがゼロの時エラー発生=>isEmptyで回避
-    final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
-    Future(() => viewModel.getWordList());
 
-    return SafeArea( //todo SafeAreaはScaffoldの下じゃないとダメみたい
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("単語一覧(リファクタリングver)"),
-          actions: <Widget>[
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.sort),
-                  tooltip: "暗記済が下になるよう並び替え",
-                  onPressed: () => checkSort(context),
-                ),
-                IconButton(
-                  icon: Icon(Icons.timer),
-                  tooltip: "登録日時で並び替え",
-                  onPressed: () => dateSort(context),
-                ),
-              ],
-            )
-          ],
-        ),
-        body: DiListWordScreenBody(),
+    //todo Builderを入れてviewModel呼び出してみる
 
-        floatingActionButton: FloatingActionButton(
-          //何か表示したい時は,childにwidgetでIcon widget入れる
-          child: Icon(Icons.add),
-          tooltip: "新しい単語を登録する",
-          onPressed: () => _startEditScreen(context),
+    return
+      Builder(builder: (context) {
+        //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
+        // リストがゼロの時エラー発生=>isEmptyで回避
+        final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
+        Future(() {
+          viewModel.getWordList();
+          // 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしたり、Providerをこのページ内に儲けたりしなくていいのでは？？
+          //todo ancestor is unsafeエラーは更新時の編集画面から一覧画面への遷移が原因かも（登録・削除の方は画面遷移やめたらエラー消えた）
+          viewModel.deleteAction.stream.listen((event) {
+            Toast.show("削除完了しました", context);
+          });
+        });
+
+      return SafeArea( //todo SafeAreaはScaffoldの下じゃないとダメみたい
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("単語一覧(リファクタリングver)"),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.sort),
+                    tooltip: "暗記済が下になるよう並び替え",
+                    onPressed: () => checkSort(context),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.timer),
+                    tooltip: "登録日時で並び替え",
+                    onPressed: () => dateSort(context),
+                  ),
+                ],
+              )
+            ],
+          ),
+          body: DiListWordScreenBody(),
+
+          floatingActionButton: FloatingActionButton(
+            //何か表示したい時は,childにwidgetでIcon widget入れる
+            child: Icon(Icons.add),
+            tooltip: "新しい単語を登録する",
+            onPressed: () => _startEditScreen(context),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> checkSort(BuildContext context) async{
@@ -76,27 +88,11 @@ class DiListWordScreen extends StatelessWidget {
   }
 }
 
-class DiListWordScreenBody extends StatefulWidget {
 
-  @override
-  _DiListWordScreenBodyState createState() => _DiListWordScreenBodyState();
-}
-class _DiListWordScreenBodyState extends State<DiListWordScreenBody> {
-
-  @override
-  void initState() {
-    super.initState();
-    print("DiListWordScreenBodyのState:$context");
-    //ここでviewModel作らなくてよくない？=>stream使えないでしょ
-    final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
-    viewModel.deleteAction.stream.listen((event) {
-      Toast.show("削除完了しました", context);
-    });
-  }
-
+class DiListWordScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return  Padding(
       padding: const EdgeInsets.all(15.0),
       child: Consumer<ListWordViewModel>(
           builder: (context,model,child){
@@ -124,7 +120,6 @@ class _DiListWordScreenBodyState extends State<DiListWordScreenBody> {
 
     //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-
 
     showDialog(
         context: context,

@@ -35,6 +35,11 @@ class ListWordScreen extends StatelessWidget {
           // リストがゼロの時エラー発生=>isEmptyで回避
           final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
           Future(()=> viewModel.getWordList());
+          //todo 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしたり、Providerをこのページ内に儲けたりしなくていいのでは？？
+         // viewModel.deleteAction.stream.listen((event) {
+           // Toast.show("削除完了しました", context);
+          //});
+
           return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
             child: Scaffold(
               appBar: AppBar(
