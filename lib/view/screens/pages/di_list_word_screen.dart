@@ -1,10 +1,13 @@
 //word_list_screenをMVVMへリファクタリング
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
+import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/view/components/word_item.dart';
 import 'package:myownflashcardver2/view/screens/pages/di_add_edit_screen.dart';
-import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/di_list_word_viewmodel.dart';
+//import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
@@ -20,14 +23,14 @@ class DiListWordScreen extends StatelessWidget {
       Builder(builder: (context) {
         //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
         // リストがゼロの時エラー発生=>isEmptyで回避
-        final viewModel = Provider.of<ListWordViewModel>(context, listen: false);
+        final viewModel = Provider.of<DiListWordViewModel>(context, listen: false);
         Future(() {
           viewModel.getWordList();
           // 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしたり、Providerをこのページ内に儲けたりしなくていいのでは？？
           //todo ancestor is unsafeエラーは更新時の編集画面から一覧画面への遷移が原因かも（登録・削除の方は画面遷移やめたらエラー消えた）
-          viewModel.deleteAction.stream.listen((event) {
-            Toast.show("削除完了しました", context);
-          });
+          if(viewModel.eventStatus == Event.delete){
+            Fluttertoast.showToast(msg:"削除完了しました");
+          }
         });
 
       return SafeArea( //todo SafeAreaはScaffoldの下じゃないとダメみたい
@@ -65,12 +68,12 @@ class DiListWordScreen extends StatelessWidget {
   }
 
   Future<void> checkSort(BuildContext context) async{
-    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+    final viewModel = Provider.of<DiListWordViewModel>(context,listen: false);
     await viewModel.allWordsSorted();
   }
 
   Future<void> dateSort(BuildContext context) async{
-    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+    final viewModel = Provider.of<DiListWordViewModel>(context,listen: false);
     await viewModel.timeSorted();
   }
 
@@ -94,7 +97,7 @@ class DiListWordScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Consumer<ListWordViewModel>(
+      child: Consumer<DiListWordViewModel>(
           builder: (context,model,child){
             return ListView.builder(
                 itemCount: model.words.length,
@@ -119,7 +122,7 @@ class DiListWordScreenBody extends StatelessWidget {
   Future<void> _onWordDeleted(word, BuildContext context) async {
 
     //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
-    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
+    final viewModel = Provider.of<DiListWordViewModel>(context,listen: false);
 
     showDialog(
         context: context,

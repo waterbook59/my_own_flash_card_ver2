@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:myownflashcardver2/data/edit_status.dart';
 import 'package:myownflashcardver2/data/event.dart';
 //import 'package:myownflashcardver2/models/db/database.dart';
@@ -31,24 +32,25 @@ class DiAddEditScreen extends StatelessWidget {
         final model = Provider.of<DiEditWordViewModel>(context,listen: false);
         Future((){
           model.getTitleText(status,word);
-          //todo Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.のエラー：画面遷移時のcontextのエラー
-          model.loginSuccessAction.stream.listen((event) {
-            print("view層で受けた$event");
-            switch(event){
+          // Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.のエラー：画面遷移時のcontextのエラー
+          //todo model.eventStatusとしてモデル層からstreamではなくnotifylistenerで取ってきて、Fluttertoast.showToastで実行
+//          model.eventStatus;
+            print("view層で受けた${model.eventStatus}");
+            switch(model.eventStatus) {
               case Event.empty:
-                Toast.show("問題と答えを入力してください。",context,duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                Fluttertoast.showToast(msg:"問題と答えを入力してください。");
                 break;
               case Event.add:
               //ancestor is unsafeエラーが出る前に追加したらエラー出ない、エラー出たあと追加するとEvent.addがいっぱい流れてくる
-                Toast.show("「${model.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
+                Fluttertoast.showToast(msg:"「${model.questionController.text}」登録完了");
                 model.textClear();
 //            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>DiListWordScreen()));
                 break;
               case Event.adderror:
-                Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);
+                Fluttertoast.showToast(msg:"この問題はすでに登録されているので登録できません");
                 break;
               case Event.update:
-                Toast.show("「${model.questionController.text}」更新しました", context);
+                Fluttertoast.showToast(msg:"「${model.questionController.text}」更新しました");
                 //todo ancestor is unsafeエラーは画面遷移が原因かも（登録の方は画面遷移やめたらエラー消えた）
 //            _backToListScreen(context);
 //            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DiListWordScreen()));
@@ -58,7 +60,7 @@ class DiAddEditScreen extends StatelessWidget {
                 break;
             }
           });
-        });
+
 
 
       return WillPopScope(//戻るときに単にpopではなく、pushReplace

@@ -98,16 +98,17 @@ class DiEditWordViewModel extends ChangeNotifier {
     //ここでstatusによってaddとupdateの条件設定
     if (status == EditStatus.add) {
       if (_questionController.text == "" || _answerController.text == "") {
-        //sink.addでStringじゃなくてイベントを渡して状態でNavigator.pushReplacementする・しないを分ける
-        _loginSuccessAction.sink.add(Event.empty);
+        //sink.addからnotifyListenerに変更して通知
+//        _loginSuccessAction.sink.add(Event.empty);
+        _eventStatus =Event.empty;
+        notifyListeners();
         return;
       }
-
       //repositoryから返ってきたイベントを格納する
       _eventStatus =await _repository.addWord(word);
-
       //うまく登録できたらclear or エラー受け取ったらToast
-      _loginSuccessAction.sink.add(_eventStatus);
+//      _loginSuccessAction.sink.add(_eventStatus);
+      notifyListeners();
       return;
 
     }
@@ -117,7 +118,7 @@ class DiEditWordViewModel extends ChangeNotifier {
       _eventStatus =await _repository.insertWord(word);
       //notifyListener入れると・・・入れても入れなくても２回目以降Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.エラー
       notifyListeners();
-      _loginSuccessAction.sink.add(_eventStatus);
+//      _loginSuccessAction.sink.add(_eventStatus);
       return;
 
     }
