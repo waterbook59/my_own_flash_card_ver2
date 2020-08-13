@@ -23,7 +23,7 @@ class DiEditWordViewModel extends ChangeNotifier {
   TextEditingController _answerController = TextEditingController();
   List<Word> _words=List();
   //Stream関連
-  StreamController<Event> _loginSuccessAction = StreamController<Event>.broadcast();
+//  StreamController<Event> _loginSuccessAction = StreamController<Event>.broadcast();
   UiState _uiState = UiState.Idle;
   Event _eventStatus;
 
@@ -34,7 +34,7 @@ class DiEditWordViewModel extends ChangeNotifier {
   TextEditingController get answerController => _answerController;
   List<Word> get words =>_words;
   //Stream関連
-  StreamController<Event> get loginSuccessAction => _loginSuccessAction;
+//  StreamController<Event> get loginSuccessAction => _loginSuccessAction;
   UiState get uiState =>_uiState;
   bool get isLogging => uiState == UiState.Loading;
   Event get eventStatus => _eventStatus;
@@ -42,7 +42,7 @@ class DiEditWordViewModel extends ChangeNotifier {
 
   //editScreenのinitStateに書いていた条件分岐による設定値をここで定義する
   Future<void> getTitleText(status,word) async{
-    //todo returnいらないかが不安(notifyListenersの後に入れてみる)
+    //returnいらないかが不安(notifyListenersの後に入れてみる??)
     if(status == EditStatus.add){
 //      print("DiEditWordViewModelのstatus:$status");
       _isQuestionEnabled = true;
@@ -74,14 +74,6 @@ class DiEditWordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-  //todo disposeをどこで使うのか確認
-  @override
-  void dispose() {
-    _loginSuccessAction.close();
-    super.dispose();
-  }
 
   Future<void> onRegisteredWord(EditStatus status) async{
     //文字登録

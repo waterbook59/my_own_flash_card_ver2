@@ -19,7 +19,7 @@ class WordsDao extends DatabaseAccessor<MyDatabase> with _$WordsDaoMixin{
    */
   Future addWord(WordRecord wordRecord) =>into(wordRecords).insert(wordRecord);
 
-  //Read(抽出)  参考：loads all todo entries
+  //Read(抽出)  参考：loads alltodo entries
   // 1.全データ取ってくる Databaseクラス内のプロパティに設定して取ってくる
   //全データなので、戻り値List
   //select(テーブルクラス名)

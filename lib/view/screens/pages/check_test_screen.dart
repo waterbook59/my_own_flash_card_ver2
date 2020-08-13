@@ -17,20 +17,10 @@ class CheckTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //TODO 受け取ったtestTypeによって取得するデータをviewModel内の条件で変える、問題数ゼロで入った時エラー
+    //受け取ったtestTypeによって取得するデータをviewModel内の条件で変える、問題数ゼロで入った時エラー
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
     Future(()=>viewModel.getWordList(testType));
     //listen:trueにするとデータ取得し続けてしまう
-//    final viewModel = Provider.of<CheckTestViewModel>(context);
-//    Future((){
-//      viewModel.isQuestionPart;
-//      viewModel.isAnswerPart;
-//      viewModel.isMemorizedCheck;
-//      viewModel.isFabVisible;
-//      viewModel.isEndMessageVisible;
-//      viewModel.index;
-//    });
-
 
     return WillPopScope(
       onWillPop:()=>_finishTestScreen(context) ,
@@ -112,7 +102,6 @@ class CheckTestScreen extends StatelessWidget {
   }
 
   Future<void> changTestState(BuildContext context,TestStatus testState) async{
-    print("ここに条件:$context");
     final viewModel = Provider.of<CheckTestViewModel>(context,listen: false);
     await viewModel.changeTestStatus(testState);
 

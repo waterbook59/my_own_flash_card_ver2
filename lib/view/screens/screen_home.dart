@@ -5,9 +5,9 @@ import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/view/components/button_with_icon.dart';
 import 'package:myownflashcardver2/view/components/radio_buttons.dart';
 import 'package:myownflashcardver2/view/screens/pages/check_test_screen.dart';
-import 'package:myownflashcardver2/view/screens/pages/di_list_word_screen.dart';
+import 'package:myownflashcardver2/view/di_screens/di_list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens/pages/home_page.dart';
-import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
+//import 'package:myownflashcardver2/view/screens/pages/list_word_screen.dart';
 import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +15,8 @@ import 'package:provider/provider.dart';
 class ScreenHome extends StatelessWidget {
 
   //とりあえずページ遷移のところはincludedで
-  //TODO あとでviewModelからtestTypeの初期値getterで取ってくる形に変更
- final Memorized testType = Memorized.includedWords;
+  //viewModelからtestTypeの初期値getterで取ってくる形に変更
+// final Memorized testType = Memorized.includedWords;
 
   @override
   Widget build(BuildContext context) {

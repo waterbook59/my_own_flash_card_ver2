@@ -54,7 +54,7 @@ class ListWordViewModel extends ChangeNotifier {
   }
 
   //削除だけではダメでそこからまたwordのリストを取ってくる必要あり
-  //TODO 連続削除時にエラーUnhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null
+  //連続削除時にエラーUnhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null
 
   Future<void> onDeletedWord( Word selectedWord) async{
     _eventStatus = await _repository.deleteWord(selectedWord);
@@ -62,7 +62,7 @@ class ListWordViewModel extends ChangeNotifier {
     _deleteAction.sink.add(_eventStatus);
   }
 
-  //TODO いつstreamをdisposeするか確認
+  //いつstreamをdisposeするか確認
   @override
   void dispose() {
     super.dispose();

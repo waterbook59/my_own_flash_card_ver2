@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 //import 'package:path/path.dart'; //これをimportしてたらcontext変になった
 import 'package:toast/toast.dart';
-import '../../main.dart';
+//dao使うならmainをimport
+//import '../../main.dart';
 import 'edit_screen.dart';
 
 class WordListScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class WordListScreen extends StatefulWidget {
 class _WordListScreenState extends State<WordListScreen> {
   List<WordRecord> _wordList = List();
   //dao追加
-  //todo テスト用にdao//
+  // テスト用にdao//
  // final dao = database.wordsDao;
 
   //wordListScreen開くときにdbからデータを全て取ってくる
@@ -26,7 +27,7 @@ class _WordListScreenState extends State<WordListScreen> {
   void _getAllWords() async {
     //ゲッターにアクセスは、インスタンス.getの後ろのfield名
     //戻り値がList型なので、返ってきたListを格納する変数を設定
-    //todo テスト用にdao//
+    // テスト用にdao//
    // _wordList = await dao.allWords;
     print("_wordList一覧isMemorizedあるか：$_wordList");
     //async/await内でsetStateが必要。initState内でやっても分離されたものが反映されない
@@ -123,7 +124,7 @@ class _WordListScreenState extends State<WordListScreen> {
               actions: <Widget>[
                 FlatButton(
                   onPressed: () async {
-                    //todo テスト用にdao//
+                    //テスト用にdao//
                  //   await dao.deleteWord(selectedWordRecord);
                     Toast.show("削除完了しました", context);
                     _getAllWords();
@@ -155,7 +156,7 @@ class _WordListScreenState extends State<WordListScreen> {
 
   _checkSort() async {
     //データベースからのデータが格納される_wordListを更新してbuildすれば表示がその順でitemBuilderで生成される
-    //todo テスト用にdao//
+    //テスト用にdao//
     //_wordList = await dao.allWordsSorted;
     setState(() {});
   }
@@ -169,7 +170,7 @@ class _WordListScreenState extends State<WordListScreen> {
   }
 
   dateSort() async {
-      //todo テスト用にdao//
+      //テスト用にdao//
    // _wordList = await dao.timeSorted;
     setState(() {});
   }

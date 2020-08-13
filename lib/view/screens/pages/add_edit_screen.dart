@@ -7,7 +7,6 @@ import 'package:myownflashcardver2/view/components/word_text_input.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-import 'di_list_word_screen.dart';
 import 'list_word_screen.dart';
 
 class AddEditScreen extends StatelessWidget {

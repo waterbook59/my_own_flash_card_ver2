@@ -5,13 +5,9 @@ import 'package:myownflashcardver2/data/event.dart';
 //import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/view/components/word_text_input.dart';
-import 'package:myownflashcardver2/view/screens/screen_home.dart';
-import 'package:myownflashcardver2/viewmodels/di_edit_word_viewmodel.dart';
-import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/di_viewmodels/di_edit_word_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:toast/toast.dart';
 import 'di_list_word_screen.dart';
-import 'list_word_screen.dart';
 
 
 
@@ -23,43 +19,13 @@ class DiAddEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return
-      //todo Builderを入れてviewModel呼び出してみる
-
-      Builder(builder: (context) {
+    //Builder削除
         final model = Provider.of<DiEditWordViewModel>(context,listen: false);
         Future((){
           model.getTitleText(status,word);
-          //todo model.eventStatusとしてモデル層からstreamではなくnotifylistenerで取ってきて、Fluttertoast.showToastで実行
-//            print("view層で受けた${model.eventStatus}");
-//            switch(model.eventStatus) {
-//              case Event.empty:
-//                Fluttertoast.showToast(msg:"問題と答えを入力してください。");
-//                break;
-//              case Event.add:
-//              //ancestor is unsafeエラーが出る前に追加したらエラー出ない、エラー出たあと追加するとEvent.addがいっぱい流れてくる
-//                Fluttertoast.showToast(msg:"「${model.questionController.text}」登録完了");
-//                model.textClear();
-////            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>DiListWordScreen()));
-//                break;
-//              case Event.adderror:
-//                Fluttertoast.showToast(msg:"この問題はすでに登録されているので登録できません");
-//                break;
-//              case Event.update:
-//                Fluttertoast.showToast(msg:"「${model.questionController.text}」更新しました");
-//                //todo ancestor is unsafeエラーは画面遷移が原因かも（登録の方は画面遷移やめたらエラー消えた）
-////            _backToListScreen(context);
-////            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DiListWordScreen()));
-//                break;
-//            //deleteは入ってこないけど下のdescriptionに出るので追加
-//              case Event.delete:
-//                break;
-//            }
+          //ここでイベント通知を受けてtoast出すのも削除（ボタン押すロジックのところで実装）
+          // model.eventStatusとしてモデル層からstreamではなくnotifylistenerで取ってきて、Fluttertoast.showToastで実行
           });
-
-
 
          return WillPopScope(//戻るときに単にpopではなく、pushReplace
                 onWillPop: ()=> _backToListScreen(context),
@@ -78,10 +44,8 @@ class DiAddEditScreen extends StatelessWidget {
                   ],
                  ),
                 body: DiAddEditBody(),
-
         ),
       );
-      });
           }
 
 

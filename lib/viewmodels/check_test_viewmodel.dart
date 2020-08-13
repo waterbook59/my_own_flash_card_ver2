@@ -52,7 +52,7 @@ class CheckTestViewModel extends ChangeNotifier  {
       _isFabVisible =true;
       _isEndMessageVisible =false;
       //ここでindex初期値に戻さないと２周目でindexが増え続けてエラー
-      _index=-1;
+      _index=0;
       _testStatus = TestStatus.before_start;
       notifyListeners();
       break;
@@ -67,7 +67,7 @@ class CheckTestViewModel extends ChangeNotifier  {
       _isMemorizedCheck =false;
       _isFabVisible =true;
       _isEndMessageVisible =false;
-      _index=-1;
+      _index=0;
       _testStatus = TestStatus.before_start;
       notifyListeners();
       break;
@@ -75,34 +75,39 @@ class CheckTestViewModel extends ChangeNotifier  {
  }
 
   Future<void> changeTestStatus(TestStatus testState) async{
-    //TODO 登録数がゼロの時にボタン押すとエラー！！
+    //登録数がゼロの時にボタン押すとエラー！！
     if(_remainedQuestion<=0){
+      //todo ここで「問題登録してください」的な表示
       return;
     }
    switch(testState){
      case TestStatus.before_start:
-       print("before_startで押すと$_testStatus/残り問題数:$_remainedQuestion");
        _testStatus =TestStatus.show_question;
+
        _isQuestionPart =true;
        _isAnswerPart = false;
        _isMemorizedCheck =false;
        //Word作らず変数はwordsとindexのみ
+//ここにあった notifyListeners();を下に移動
+//       _index +=1;
+//       _remainedQuestion -= 1;
+       print("before_startで押すと$_testStatus/残り問題数:$_remainedQuestion");
        notifyListeners();
-       _index +=1;
-       _remainedQuestion -= 1;
        //_wordsから選択した１行分を定義_selectedWord =_words[index]
        break;
      case TestStatus.show_question:
        _testStatus = TestStatus.show_answer;
-       print("show_questionで押すと$_testStatus/残り問題数:$_remainedQuestion");
+
        _isQuestionPart =true;
        _isAnswerPart = true;
        _isMemorizedCheck =true;
        //CheckboxListTileのvalue値へ取ってきたデータ(_selectedWord)内のisMemorizedを設定
        _isMemorized = _words[_index].isMemorized;
+       print("show_questionで押すと$_testStatus/残り問題数:$_remainedQuestion");
        notifyListeners();
        break;
      case TestStatus.show_answer:
+       print("show_answer:$_testStatus/残り問題数:$_remainedQuestion");
        //DBへの暗記済フラグの更新処理（１行分丸ごと更新）
        //更新後の状態で1行分インスタンス化=>更新クエリの変数に設定
        Word updateWord = Word(
@@ -112,25 +117,27 @@ class CheckTestViewModel extends ChangeNotifier  {
            isMemorized: _isMemorized);
        print("updateWordのstrQuestion：${updateWord.strQuestion}");
        await _repository.checkedUpdateFlag(updateWord);//この後notifyListener?
-       if(_remainedQuestion<=0){
+       if(_remainedQuestion<=1){
          print("show_answer問題0以下で押すと$_testStatus/残り問題数:$_remainedQuestion");
          _isFabVisible = false;
          _isEndMessageVisible =true;
          _testStatus = TestStatus.finished;
+         _remainedQuestion=0;
            notifyListeners();
        }else{
          _testStatus = TestStatus.show_question;
-         print("show_answer問題0以上で押すと$_testStatus/残り問題数:$_remainedQuestion");
          _isQuestionPart =true;
          _isAnswerPart = false;
          _isMemorizedCheck =false;
          //Word作らず変数はwordsとindexのみ
-         notifyListeners();
+ // ここにあった notifyListeners();を下に移動
          _index +=1;
          _remainedQuestion -= 1;
+         print("show_answer問題0以上で押すと$_testStatus/残り問題数:$_remainedQuestion");
+         notifyListeners();
        }
        break;
-     case TestStatus.finished:
+       case TestStatus.finished:
        print("$_testStatus");
        notifyListeners();
        break;

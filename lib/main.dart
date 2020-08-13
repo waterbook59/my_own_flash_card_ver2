@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/di/providers.dart';
-import 'package:myownflashcardver2/models/db/database.dart';
+//daoやdbをDIなしで使うならimport
+//import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/view/screens/screen_home.dart';
-import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
-import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
-import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
+//DIありで下の３つのviewModelはglobalProvidersに格納
+//import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
+//import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
+//import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 //step8

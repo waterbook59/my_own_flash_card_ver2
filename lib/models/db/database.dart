@@ -16,7 +16,7 @@ part 'database.g.dart';
 
 //step3.問題と答えの項目を入れるテーブルクラス定義
 //moorのTableをimportすること
-//TODO エンティティとしてWordではなくWordRecordを作って格納する
+//エンティティとしてWordではなくWordRecordを作って格納する!!
 class WordRecords extends Table {
   //Table内でTextColumnメソッドを使ってカラム設置
   //ちなみにautoIncrementで行番号自動で増やしたりなどの制約をかけることができる

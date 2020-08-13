@@ -42,7 +42,7 @@ class EditWordViewModel extends ChangeNotifier {
 
   //editScreenのinitStateに書いていた条件分岐による設定値をここで定義する
   Future<void> getTitleText(status,word) async{
-    //todo returnいらないかが不安(notifyListenersの後に入れてみる)
+    //returnいらないかが不安(notifyListenersの後に入れてみる??)
     if(status == EditStatus.add){
       print("EditWordViewModelのstatus:$status");
       _isQuestionEnabled = true;
@@ -92,7 +92,7 @@ class EditWordViewModel extends ChangeNotifier {
 //    });
 //  }
 
-  //todo disposeをどこで使うのか確認
+  //disposeをどこで使うのか確認
   @override
   void dispose() {
     _loginSuccessAction.close();

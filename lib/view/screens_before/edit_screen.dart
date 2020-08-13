@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:moor_ffi/database.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
-import 'package:myownflashcardver2/main.dart';
 import 'package:myownflashcardver2/view/components/words_textfield.dart';
 //import 'package:myownflashcardver2/parts/words_textfield.dart';
 import 'package:myownflashcardver2/view/screens_before/word_list_screen.dart';
@@ -34,7 +33,7 @@ class _EditScreenState extends State<EditScreen> {
   //外に出したWidgetでも
   TextEditingController testText=TextEditingController();
   //dao追加
-  //todo テスト用に//
+  // テスト用に//
    //final dao = database.wordsDao;
 
 
@@ -247,7 +246,7 @@ class _EditScreenState extends State<EditScreen> {
             try {
               //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
               //ちなみにdatabaseはmain.dartでインスタンス化済
-              //todo テスト用にdao//
+              //テスト用にdao//
 //              await dao.addWord(wordRecord);
               //databaseへ文字登録が終わったらTextField空白にする
               _questionController.clear();
@@ -321,7 +320,7 @@ class _EditScreenState extends State<EditScreen> {
              try{
                //database.dartで定義したaddWordメソッドへ上記のword（コンストトラクタ）を渡す
                //ちなみにdatabaseはmain.dartでインスタンス化済
-               //todo テスト用にdao//
+               //テスト用にdao//
              //  await dao.updateWord(wordRecord);
 
                /* chapter251 AlertDialogから直接一覧画面ページへ行くには

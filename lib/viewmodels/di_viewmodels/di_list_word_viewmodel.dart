@@ -21,12 +21,12 @@ class DiListWordViewModel extends ChangeNotifier {
 
  //  直接database参照しないようにモデルクラスをDBに設定、Wordへ変換
   List<Word> _words=List<Word>();
-  StreamController<Event> _deleteAction = StreamController<Event>.broadcast();
   Event _eventStatus;
+  //  StreamController<Event> _deleteAction = StreamController<Event>.broadcast();
 
   List<Word> get words =>_words;
-  StreamController<Event> get deleteAction => _deleteAction;
   Event get eventStatus => _eventStatus;
+  //  StreamController<Event> get deleteAction => _deleteAction;
 
 
   Future<void> getWordList() async{
@@ -54,30 +54,15 @@ class DiListWordViewModel extends ChangeNotifier {
   }
 
   //削除だけではダメでそこからまたwordのリストを取ってくる必要あり
-  //TODO 連続削除時にエラーUnhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null
-
   Future<void> onDeletedWord( Word selectedWord) async{
     _eventStatus = await _repository.deleteWord(selectedWord);
 
-// editWordViewModelの方ではsink.addだけで通知
-//    _deleteAction.sink.add(_eventStatus);
-    //todo sink.addからnotifyListenerに変更
-//    _eventStatus= Event.delete;
+    // sink.addからnotifyListenerに変更!!!
     notifyListeners();
   }
 
-  //TODO いつstreamをdisposeするか確認
-  @override
-  void dispose() {
-    super.dispose();
-    _deleteAction.close();
-  }
 
 
-//  Future<void> wordDeleted() async{
-//    _words =await _repository.wordDeleted();
-//    notifyListeners();
-//  }
 
 
 }

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myownflashcardver2/data/memorized_status.dart';
 import 'package:myownflashcardver2/models/db/database.dart';
 //import 'package:myownflashcardver2/view/screens/home_screen.dart';
-
-import '../../main.dart';
+//dao使うならmain.dartをimport
 
 enum TestStatus { before_start, show_question, show_answer, finished }
 
@@ -40,7 +39,7 @@ class _TestScreenState extends State<TestScreen> {
   int _index=0;
 
   //dao追加
-  //todo テスト用にdao//
+  // テスト用にdao//
   //final dao = database.wordsDao;
 
 
@@ -53,10 +52,10 @@ class _TestScreenState extends State<TestScreen> {
   getWords() async{
     if(widget.testType == Memorized.includedWords){
       //awaitはdatabase.allWordsの前(_allWordListの前ではない)
-      //todo テスト用にdao//
+      //テスト用にdao//
     //  _testDataList = await dao.allWords;
     }else{
-      //todo テスト用にdao//
+      //テスト用にdao//
      // _testDataList = await dao.memorizedExcludeWords;
     }
 
@@ -266,7 +265,7 @@ class _TestScreenState extends State<TestScreen> {
       strAnswer: _selectedWord.strAnswer,
       strTime: _selectedWord.strTime,
       isMemorized: _isMemorized);
-    //todo テスト用にdao//
+    // テスト用にdao//
    //  await dao.updateWord(updateWordRecord);
 //     print(updateWord.toString());
   }

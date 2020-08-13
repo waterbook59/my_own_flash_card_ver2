@@ -34,7 +34,7 @@ class ListWordScreen extends StatelessWidget {
           //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
           // リストがゼロの時エラー発生=>isEmptyで回避
           final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
-          //todo 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしなくても良い
+          //普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしなくても良い
           Future((){
             viewModel.getWordList();
             viewModel.deleteAction.stream.listen((event) {
@@ -42,7 +42,7 @@ class ListWordScreen extends StatelessWidget {
             });
           });
 
-          return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
+          return SafeArea(// SafeAreaはScaffoldの下じゃないとダメみたい
             child: Scaffold(
               appBar: AppBar(
                 title: Text("単語一覧(リファクタリングver)"),
@@ -63,7 +63,7 @@ class ListWordScreen extends StatelessWidget {
                   )
                 ],
               ),
-              //todo viewModel渡してみたが、同様にエラー
+              //viewModel渡してみたが、同様にエラー
 //          body:ListWordScreenBody(viewModel: viewModel,),
               body:ListWordScreenBody(),
 
@@ -80,7 +80,7 @@ class ListWordScreen extends StatelessWidget {
     );
 
 
-//      return SafeArea(//todo SafeAreaはScaffoldの下じゃないとダメみたい
+//      return SafeArea(
 //        child: Scaffold(
 //          appBar: AppBar(
 //            title: Text("単語一覧(リファクタリングver)"),
@@ -101,7 +101,7 @@ class ListWordScreen extends StatelessWidget {
 //              )
 //            ],
 //          ),
-//          //todo viewModel渡してみたが、同様にエラー
+//          //iewModel渡してみたが、同様にエラー
 ////          body:ListWordScreenBody(viewModel: viewModel,),
 //          body:ListWordScreenBody(),
 //
@@ -182,14 +182,14 @@ class ListWordScreen extends StatelessWidget {
 //    );
 //  }
 //
-//  //TODO 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
+//  // 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
 //  //ChangeNotifierProviderで削除ごとに余分に作られたwidgetにちゃんとStateのBuildContextが入ってこずエラー
 //  //add_edit_screenで同様に出たエラーの時は、main.dartにあったChangeNotifierProviderをAddEditScreenのbuild下に設定
 //  // =>viewModel.onDeletedWordの段階ではnotifyListenerしない＆
 //  // 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0=>isEmptyで回避
 //  Future<void> _onWordDeleted(word, BuildContext context) async {
 //
-//    //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
+//    // もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
 //    final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
 //
 //
@@ -256,14 +256,13 @@ class ListWordScreenBody extends StatelessWidget {
     );
   }
 
-  //TODO 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
+  //連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
   //ChangeNotifierProviderで削除ごとに余分に作られたwidgetにちゃんとStateのBuildContextが入ってこずエラー
   //add_edit_screenで同様に出たエラーの時は、main.dartにあったChangeNotifierProviderをAddEditScreenのbuild下に設定
   // =>viewModel.onDeletedWordの段階ではnotifyListenerしない＆
   // 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0=>isEmptyで回避
   Future<void> _onWordDeleted(word, BuildContext context) async {
 
-    //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
     final viewModel = Provider.of<ListWordViewModel>(context,listen: false);
 
     showDialog(

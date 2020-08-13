@@ -17,7 +17,7 @@ class Fab extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       // FABのonPressed
-      //右辺にも()必要 TODO メソッド参照のやり方かくにん
+      //右辺にも()必要  メソッド参照のやり方かくにん
       onPressed: ()=> goNextState(),
       tooltip: "次へ",
       child: Icon(Icons.skip_next),

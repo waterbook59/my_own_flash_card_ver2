@@ -1,13 +1,12 @@
 //いわゆるレポジトリ層
-import 'package:flutter/material.dart';
 import 'package:moor_ffi/database.dart';
 import 'package:myownflashcardver2/data/event.dart';
 import 'package:myownflashcardver2/models/db/dao.dart';
 //import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/model/words_model.dart';
 import 'package:myownflashcardver2/util/extensions.dart';
-
-import '../../main.dart';
+//DIなしだとdatabaseインスタンス使うためにmain.dartをimportする必要あり
+//import '../../main.dart';
 
 
 class WordsRepository  {
@@ -19,8 +18,6 @@ class WordsRepository  {
 
     //DIなし
 //  final WordsDao _dao = database.wordsDao;
-
-
 
 
   List<Word> result=List<Word>();
