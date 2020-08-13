@@ -14,11 +14,11 @@ class WordsRepository  {
 
   //DIあり
   // DIなしだとクエリがnullで返ってくる(DIでdaoがインスタンスの値として渡された場合はここに格納)
-//    WordsDao _dao;
-//  WordsRepository({dao}):_dao =dao;
+  final WordsDao _dao;
+  WordsRepository({dao}):_dao =dao;
 
     //DIなし
-  final WordsDao _dao = database.wordsDao;
+//  final WordsDao _dao = database.wordsDao;
 
 
 
@@ -35,9 +35,9 @@ class WordsRepository  {
 
   //このresultWordRecordsをfinalにすることで直接database.dartの参照やWordRecordのインスタンスがいらない
   final resultWordRecords = await _dao.allWords;
-    print("DB空のWordRecordのリスト：$resultWordRecords");
+//    print("DB空のWordRecordのリスト：$resultWordRecords");
     result =resultWordRecords.toWords(resultWordRecords);
-    print("DBのWordRecordのリストをWordへ変換(中見れない..)：$result");
+//    print("DBのWordRecordのリストをWordへ変換(中見れない..)：$result");
   return result;
   }
 

@@ -4,6 +4,7 @@ import 'package:myownflashcardver2/models/db/database.dart';
 import 'package:myownflashcardver2/models/repository/words_repository.dart';
 import 'package:myownflashcardver2/viewmodels/check_test_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/di_edit_word_viewmodel.dart';
+import 'package:myownflashcardver2/viewmodels/di_list_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/edit_word_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/home_screen_viewmodel.dart';
 import 'package:myownflashcardver2/viewmodels/list_word_viewmodel.dart';
@@ -29,9 +30,9 @@ List dependentModels = [
   ProxyProvider<MyDatabase,WordsDao>(
     update: (_, db, dao)=>WordsDao(db),
 ),
-//  ProxyProvider<WordsDao,WordsRepository>(
-//    update: (_, dao, repository)=>WordsRepository(dao: dao),
-//  ),
+  ProxyProvider<WordsDao,WordsRepository>(
+    update: (_, dao, repository)=>WordsRepository(dao: dao),
+  ),
 ];
 
 //chapter98 RepositoryにChangeNotifierProxyProvider
@@ -41,11 +42,11 @@ List viewModels =[
     repository:Provider.of<WordsRepository>(context, listen: false),
     ),
   ),
-//  ChangeNotifierProvider<ListWordViewModel>(
-//    create: (context)=>ListWordViewModel(
-//      repository:Provider.of<WordsRepository>(context, listen: false),
-//    ),
-//  ),
+  ChangeNotifierProvider<DiListWordViewModel>(
+    create: (context)=>DiListWordViewModel(
+      repository:Provider.of<WordsRepository>(context, listen: false),
+    ),
+  ),
   ChangeNotifierProvider<DiEditWordViewModel>(
     create: (context)=>DiEditWordViewModel(
         repository:Provider.of<WordsRepository>(context, listen: false),

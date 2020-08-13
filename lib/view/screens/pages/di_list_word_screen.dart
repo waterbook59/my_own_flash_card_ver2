@@ -18,7 +18,6 @@ class DiListWordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //todo Builderを入れてviewModel呼び出してみる
-
     return
       Builder(builder: (context) {
         //initState的にデータベースからWordのリストを取ってくる(buildするわけではないので、listen:false)
@@ -26,11 +25,8 @@ class DiListWordScreen extends StatelessWidget {
         final viewModel = Provider.of<DiListWordViewModel>(context, listen: false);
         Future(() {
           viewModel.getWordList();
-          // 普通にここのFuture内でstream.listenして通知すればbodyをStatefulにしたり、Providerをこのページ内に儲けたりしなくていいのでは？？
-          //todo ancestor is unsafeエラーは更新時の編集画面から一覧画面への遷移が原因かも（登録・削除の方は画面遷移やめたらエラー消えた）
-          if(viewModel.eventStatus == Event.delete){
-            Fluttertoast.showToast(msg:"削除完了しました");
-          }
+          //todo isEmptyの時に「文字登録してください」的な表示できるか
+//           Future内でstream.listenしたり、Fluttertoastせずにボタン押すところでイベント受けてFluttertoastする
         });
 
       return SafeArea( //todo SafeAreaはScaffoldの下じゃないとダメみたい
@@ -114,14 +110,14 @@ class DiListWordScreenBody extends StatelessWidget {
     );
   }
 
-  //TODO 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
+  // 連続削除時findAncestorStateOfTypeエラーが発生：Unhandled Exception: NoSuchMethodError: The method 'findAncestorStateOfType' was called on null.Receiver: null
   //ChangeNotifierProviderで削除ごとに余分に作られたwidgetにちゃんとStateのBuildContextが入ってこずエラー
   //add_edit_screenで同様に出たエラーの時は、main.dartにあったChangeNotifierProviderをAddEditScreenのbuild下に設定
   // =>viewModel.onDeletedWordの段階ではnotifyListenerしない＆
   // 最後の一つを削除しようとするとエラー：Unhandled Exception: RangeError (index): Invalid value: Valid value range is empty: 0=>isEmptyで回避
   Future<void> _onWordDeleted(word, BuildContext context) async {
 
-    //todo もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
+    // もしかしてviewModel作りすぎが問題なのでは？？？=>widget.viewModelにしてみたがエラー
     final viewModel = Provider.of<DiListWordViewModel>(context,listen: false);
 
     showDialog(
@@ -133,9 +129,13 @@ class DiListWordScreenBody extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                await viewModel.onDeletedWord(word);
+                await viewModel.onDeletedWord(word);//イベントEvent.delete返ってくる
+                if(viewModel.eventStatus == Event.delete){
+                  Fluttertoast.showToast(msg:"削除完了しました");
+                }
                 // ここで最後の１つを削除後取得しようとするとList内が空っぽでエラーが出るがisEmptyで回避
                 await viewModel.getWordList();
+                //todo ここでイベント通知でmodel.eventStatus&notifyListeners
                 Navigator.pop(context);
               },
               child: Text("はい"),

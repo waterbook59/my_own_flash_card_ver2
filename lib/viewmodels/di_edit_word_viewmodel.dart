@@ -44,7 +44,7 @@ class DiEditWordViewModel extends ChangeNotifier {
   Future<void> getTitleText(status,word) async{
     //todo returnいらないかが不安(notifyListenersの後に入れてみる)
     if(status == EditStatus.add){
-      print("DiEditWordViewModelのstatus:$status");
+//      print("DiEditWordViewModelのstatus:$status");
       _isQuestionEnabled = true;
       _titleText= Text("新しい単語の追加");
       _questionController.text ="";
@@ -52,7 +52,7 @@ class DiEditWordViewModel extends ChangeNotifier {
       notifyListeners();
     }
     if(status == EditStatus.edit){
-      print("DiEditWordViewModelのstatus:$status");
+//      print("DiEditWordViewModelのstatus:$status");
       _isQuestionEnabled = false;
       _titleText= Text("登録した単語の修正");
       _questionController.text =word.strQuestion;
@@ -71,7 +71,6 @@ class DiEditWordViewModel extends ChangeNotifier {
     await _repository.insertWord(word);
     _questionController.clear();
     _answerController.clear();
-
     notifyListeners();
   }
 
@@ -85,7 +84,6 @@ class DiEditWordViewModel extends ChangeNotifier {
   }
 
   Future<void> onRegisteredWord(EditStatus status) async{
-    print("DiEditWordViewModel内に渡したstatus:$status");
     //文字登録
     Word word = Word(
       strQuestion: _questionController.text,
@@ -110,13 +108,11 @@ class DiEditWordViewModel extends ChangeNotifier {
 //      _loginSuccessAction.sink.add(_eventStatus);
       notifyListeners();
       return;
-
     }
 
     if(status == EditStatus.edit){
       //レポジトリ層へ更新投げる
       _eventStatus =await _repository.insertWord(word);
-      //notifyListener入れると・・・入れても入れなくても２回目以降Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.エラー
       notifyListeners();
 //      _loginSuccessAction.sink.add(_eventStatus);
       return;

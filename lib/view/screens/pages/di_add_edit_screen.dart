@@ -32,55 +32,53 @@ class DiAddEditScreen extends StatelessWidget {
         final model = Provider.of<DiEditWordViewModel>(context,listen: false);
         Future((){
           model.getTitleText(status,word);
-          // Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.のエラー：画面遷移時のcontextのエラー
           //todo model.eventStatusとしてモデル層からstreamではなくnotifylistenerで取ってきて、Fluttertoast.showToastで実行
-//          model.eventStatus;
-            print("view層で受けた${model.eventStatus}");
-            switch(model.eventStatus) {
-              case Event.empty:
-                Fluttertoast.showToast(msg:"問題と答えを入力してください。");
-                break;
-              case Event.add:
-              //ancestor is unsafeエラーが出る前に追加したらエラー出ない、エラー出たあと追加するとEvent.addがいっぱい流れてくる
-                Fluttertoast.showToast(msg:"「${model.questionController.text}」登録完了");
-                model.textClear();
-//            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>DiListWordScreen()));
-                break;
-              case Event.adderror:
-                Fluttertoast.showToast(msg:"この問題はすでに登録されているので登録できません");
-                break;
-              case Event.update:
-                Fluttertoast.showToast(msg:"「${model.questionController.text}」更新しました");
-                //todo ancestor is unsafeエラーは画面遷移が原因かも（登録の方は画面遷移やめたらエラー消えた）
-//            _backToListScreen(context);
-//            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DiListWordScreen()));
-                break;
-            //deleteは入ってこないけど下のdescriptionに出るので追加
-              case Event.delete:
-                break;
-            }
+//            print("view層で受けた${model.eventStatus}");
+//            switch(model.eventStatus) {
+//              case Event.empty:
+//                Fluttertoast.showToast(msg:"問題と答えを入力してください。");
+//                break;
+//              case Event.add:
+//              //ancestor is unsafeエラーが出る前に追加したらエラー出ない、エラー出たあと追加するとEvent.addがいっぱい流れてくる
+//                Fluttertoast.showToast(msg:"「${model.questionController.text}」登録完了");
+//                model.textClear();
+////            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>DiListWordScreen()));
+//                break;
+//              case Event.adderror:
+//                Fluttertoast.showToast(msg:"この問題はすでに登録されているので登録できません");
+//                break;
+//              case Event.update:
+//                Fluttertoast.showToast(msg:"「${model.questionController.text}」更新しました");
+//                //todo ancestor is unsafeエラーは画面遷移が原因かも（登録の方は画面遷移やめたらエラー消えた）
+////            _backToListScreen(context);
+////            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DiListWordScreen()));
+//                break;
+//            //deleteは入ってこないけど下のdescriptionに出るので追加
+//              case Event.delete:
+//                break;
+//            }
           });
 
 
 
-      return WillPopScope(//戻るときに単にpopではなく、pushReplace
+         return WillPopScope(//戻るときに単にpopではなく、pushReplace
                 onWillPop: ()=> _backToListScreen(context),
                 child:
-        Scaffold(
-          appBar: AppBar(
-            title:
-            Consumer<DiEditWordViewModel>(builder: (context, model, child) {
-              return model.titleText;
-            }),
-            actions: <Widget>[
-              IconButton(
-                tooltip: "登録",
-                icon: Icon(Icons.check),
-                onPressed: () => _onWordRegistered(context, status),),
-            ],
-          ),
-          body: DiAddEditBody(),
-//                ),
+            Scaffold(
+               appBar: AppBar(
+                 title:
+                   Consumer<DiEditWordViewModel>(builder: (context, model, child) {
+                   return model.titleText;
+                }),
+                 actions: <Widget>[
+                   IconButton(
+                      tooltip: "登録",
+                      icon: Icon(Icons.check),
+                      onPressed: () => _onWordRegistered(context, status),),
+                  ],
+                 ),
+                body: DiAddEditBody(),
+
         ),
       );
       });
@@ -88,12 +86,30 @@ class DiAddEditScreen extends StatelessWidget {
 
 
 //   単語登録をview=>DiEditWordViewModel=>レポジトリ経由で外注
-  //todo 押すといきなりストップ！！(providersが怪しい)
-  Future<void>  _onWordRegistered(BuildContext context, EditStatus status) async{
+    _onWordRegistered(BuildContext context, EditStatus status) async{
     final model = Provider.of<DiEditWordViewModel>(context,listen: false);
     //awaitの追加！！！
-    await model.onRegisteredWord(status);
-
+    await model.onRegisteredWord(status); //eventがnotifyListenersで返ってくる
+    switch(model.eventStatus){
+      case Event.empty:
+        Fluttertoast.showToast(msg:"問題と答えを入力してください。");
+        break;
+      case Event.add:
+        Fluttertoast.showToast(msg:"「${model.questionController.text}」登録完了");
+        model.textClear();
+        break;
+      case Event.adderror:
+        Fluttertoast.showToast(msg:"この問題はすでに登録されているので登録できません");
+        break;
+      case Event.update:
+        Fluttertoast.showToast(msg:"「${model.questionController.text}」更新しました");
+              _backToListScreen(context);
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DiListWordScreen()));
+        break;
+     //deleteは入ってこないけど下のdescriptionに出るので追加
+      case Event.delete:
+        break;
+    }
   }
 }
 
@@ -122,14 +138,11 @@ class DiAddEditBody extends StatelessWidget {
                 // isQuestionEnabled: model.isQuestionEnabled,);
               }),
           const SizedBox(height: 30.0,),
-
-//              WordTextInput(label: "答え",textEditingController: _answerController),
         ],
       ),
     );
   }
 }
-
 
 
 //単語一覧画面へ戻る関数がAddEditScreenクラスの外
@@ -140,12 +153,3 @@ Future<bool> _backToListScreen(BuildContext context) {
   );
   return Future.value(false);
 }
-
-
-//Future<bool> _backToListScreen(BuildContext context) {
-//  Navigator.pushAndRemoveUntil(
-//      context,
-//      MaterialPageRoute(builder: (context)=>ScreenHome()),
-//        (_)=>false);
-//  return Future.value(false);
-//}

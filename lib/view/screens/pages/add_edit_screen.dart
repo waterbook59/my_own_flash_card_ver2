@@ -41,9 +41,6 @@ class AddEditScreen extends StatelessWidget {
                 case Event.add:
                   Toast.show("「${model.questionController.text}」登録完了",context,duration: Toast.LENGTH_LONG);
                   model.textClear();
-        //          Navigator.pushReplacement(
-        //              context,
-        //              MaterialPageRoute(builder: (context)=>ListWordScreen()));
                   break;
                 case Event.adderror:
                   Toast.show("この問題はすでに登録されているので登録できません", context,duration: Toast.LENGTH_LONG);

@@ -114,7 +114,7 @@ class ScreenHome extends StatelessWidget {
   _lookListTest(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListWordScreen()),
+      MaterialPageRoute(builder: (context) => DiListWordScreen()),
     );
   }
 
