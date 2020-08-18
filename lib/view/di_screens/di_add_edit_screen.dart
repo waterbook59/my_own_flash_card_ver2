@@ -115,5 +115,6 @@ Future<bool> _backToListScreen(BuildContext context) {
       context,
       MaterialPageRoute(builder: (context)=>DiListWordScreen())
   );
+  //asyncついてればFuture.valueじゃなくても良いかも？？
   return Future.value(false);
 }
